@@ -37,12 +37,10 @@ class Stream:
     def __init__(self, stream: asyncio.StreamReader, message: Message, init_text: str, sleep: int):
         self.stream = stream
         self.message = message
-
-        self.init_text = init_text
         self.sleep = sleep
         
         self.buffer = []
-        self.text = ""
+        self.text = text
         
     async def process(self):
         while True:
