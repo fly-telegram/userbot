@@ -45,10 +45,6 @@ async def update(Client, message: Message):
     else:
         origin.pull()
 
-    if not pull:
-        await message.edit("🕊 <b>Up-To-Date</b>")
-        return
-    
     db.set(
         "restart_info",
         {
