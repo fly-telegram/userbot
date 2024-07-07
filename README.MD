@@ -1,4 +1,4 @@
-# fly-telegram
+# 🕊 fly-telegram
 It is a handy and easy to use userbot.
 <br></br>
 
@@ -9,8 +9,11 @@ It is a handy and easy to use userbot.
     cd userbot
     python3 -m pip install -r requirements.txt
     ```
-## startup
+## Startup
 - 🐧 Linux
     ```
     python3 main.py
     ```
+## Channels
+> [Updates](https://t.me/flyTG_ub)
+> [Support](https://t.me/flyTG_support)
