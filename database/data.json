@@ -3,6 +3,8 @@
   "restart_info": null,
   "core": {
     "restart": {},
-    "update": {}
+    "update": {
+        "GIT_ORIGIN": "https://github.com/fly-telegram/userbot.git"
+    }
   }
 }
