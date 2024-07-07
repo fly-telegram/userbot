@@ -46,10 +46,10 @@ class Stream:
             line = await self.stream.readline()
             if line:
                 self.buffer.append(line.decode().strip())
-                if len(self.buffer) == 2:
+                if len(self.buffer) >= 2:
                     self.text += f"<code>{self.buffer[0]}</code>\n<code>{self.buffer[1]}</code>\n"
-                    self.buffer = []
-                elif len(self.buffer) == 1:
+                    self.buffer = self.buffer[2:]
+                else:
                     self.text += f"<code>{self.buffer[0]}</code>\n"
                     self.buffer = []
                 try:
