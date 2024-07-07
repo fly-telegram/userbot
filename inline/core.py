@@ -38,7 +38,8 @@ class Inline:
             "🕊 fly-telegram: "
         ]
 
-        pattern = r"Use this token to access the HTTP API:\s*([0-9A-Za-z:_]+)"
+        pattern = r"Use this token to access the HTTP API:\n([0-9]+:[A-Za-z0-9_]+)"
+        token = None
 
         async with Conversation(client, botfather, True) as conv:
             for message in messages:
@@ -51,7 +52,7 @@ class Inline:
                         token = match.group(1)
 
                     if any(error in response.text for error in self.errors_text):
-                        return
+                        return False
                 except errors.UserIsBlocked:
                     await client.unblock_user(botfather)
 

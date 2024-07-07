@@ -32,18 +32,21 @@ async def load_module(Client, message: Message):
     if file.document.file_name.endswith(".py") or not file.document.file_name.endswith(".zip"):
         dragon = True
 
-    module_name = file.document.file_name
+    filename = file.document.file_name
+    module_name = filename.split(
+        ".py")[0] if dragon else filename.split(".zip")[0]
+
     await message.edit(f"🕊 <b>{module_name}</b>\n<code>Loading module...</code>")
 
     if not dragon:
         with tempfile.TemporaryDirectory() as temp_dir:
-            file_path = os.path.join(temp_dir, module_name)
+            file_path = os.path.join(temp_dir, filename)
             await file.download(file_path)
 
             with zipfile.ZipFile(file_path, "r") as archive:
                 archive.extractall(os.path.join("modules", module_name))
     else:
-        file_path = os.path.join("dragon_modules", module_name)
+        file_path = os.path.join("dragon_modules", filename)
         await file.download(file_path)
 
     if not dragon:
@@ -95,7 +98,7 @@ async def load_module(Client, message: Message):
         if not dragon:
             await loader.load(module_name, Client)
         else:
-            await loader.load_dragon(module_name.split(".py")[0], Client)
+            await loader.load_dragon(module_name, Client)
     except Exception as error:
         await message.edit(
             f"❌ <b>{module_name} installing error</b>\n<code>{error}</code>"
@@ -103,7 +106,7 @@ async def load_module(Client, message: Message):
         if not dragon:
             shutil.rmtree(os.path.join("modules", module_name))
         else:
-            os.remove(os.path.join("dragon_modules", module_name))
+            os.remove(os.path.join("dragon_modules", filename))
         return
 
     if dragon:
@@ -115,12 +118,12 @@ async def load_module(Client, message: Message):
 
     author = info.get("meta", "author")
     description = info.get("meta", "description")
-    version = "".join(info.get("meta", "version"))
+    module_version = "".join(map(str, info.get("meta", "version")))
 
     await message.edit(
         f"🕊 <b>{module_name} by {author} is loaded!</b>\n"
         f"├─ ℹ️ <i>{description}</i>\n"
-        f"└─ 📦 <code>{version}</code>"
+        f"└─ 📦 <code>{module_version}</code>"
     )
 
 

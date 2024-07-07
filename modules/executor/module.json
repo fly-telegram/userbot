@@ -8,7 +8,7 @@
         "python_min": [3, 9, 0],
         "version_min": [1, 0, 1],
         "requirements": [
-             "ast"
+             "meval"
         ]
     }
 }

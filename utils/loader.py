@@ -20,6 +20,7 @@ class Loader:
             "help",
             "loader",
             "core",
+            "executor",
         )
 
     async def unload(
