@@ -47,8 +47,8 @@ class Stream:
             line = await self.stream.readline()
             if line:
                 self.buffer.append(line.decode().strip())
-                if len(buffer) == 2:
-                    self.text += f"<code>{buffer[0]}</code>\n<code>{buffer[1]}</code>\n"
+                if len(self.buffer) == 2:
+                    self.text += f"<code>{self.buffer[0]}</code>\n<code>{self.buffer[1]}</code>\n"
                     self.buffer = []
                     try:
                         await self.message.edit(self.text)
