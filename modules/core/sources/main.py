@@ -28,7 +28,7 @@ async def restart(Client, message: Message):
 @Client.on_message(filters.command("update", prefixes=prefixes) & filters.me)
 async def update(Client, message: Message):
     await message.edit("🕊 <b>Updating...</b>")
-    
+
     try:
         origin.pull()
     except GitCommandError:
@@ -43,6 +43,7 @@ async def update(Client, message: Message):
         },
     )
     os.execl(sys.executable, sys.executable, "main.py")
+
 
 @Client.on_message(
     filters.command(["addprefix", "addpref"],
