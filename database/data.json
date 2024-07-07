@@ -4,7 +4,7 @@
   "core": {
     "restart": {},
     "update": {
-        "GIT_ORIGIN": "https://github.com/fly-telegram/userbot.git"
+      "GIT_ORIGIN": "https://github.com/fly-telegram/userbot.git"
     }
   }
 }

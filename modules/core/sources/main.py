@@ -4,7 +4,7 @@ from pyrogram.types import Message
 import sys
 import os
 
-from utils.git import origin
+from utils.git import origin, repo, repo_initialized
 from .utils import prefixes, db, help_manager
 
 
@@ -27,9 +27,26 @@ async def restart(Client, message: Message):
 @Client.on_message(filters.command("update", prefixes=prefixes) & filters.me)
 async def update(Client, message: Message):
     await message.edit("🕊 <b>Updating...</b>")
-    pull = origin.pull()
+
+    branch = repo.active_branch.name
+    current = repo.head.commit.hexsha
+    new = next(
+                repo.iter_commits(f"origin/{branch}", max_count=1)
+            ).hexsha
+    
+    if current == new:
+        await message.edit("🕊 <b>Up-To-Date</b>")
+    
+    if not repo_initialized:
+        origin.fetch()
+        repo.create_head("master", origin.refs.master)
+        repo.heads.master.set_tracking_branch(origin.refs.master)
+        repo.heads.master.checkout(True)
+    else:
+        origin.pull()
+
     if not pull:
-        await message.edit("🕊 <b>your userbot is the latest version!</b>")
+        await message.edit("🕊 <b>Up-To-Date</b>")
         return
     
     db.set(
