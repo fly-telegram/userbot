@@ -38,10 +38,9 @@ class Stream:
         self.stream = stream
         self.message = message
         self.sleep = sleep
-        
         self.buffer = []
         self.text = text
-        
+
     async def process(self):
         while True:
             line = await self.stream.readline()
@@ -50,10 +49,13 @@ class Stream:
                 if len(self.buffer) == 2:
                     self.text += f"<code>{self.buffer[0]}</code>\n<code>{self.buffer[1]}</code>\n"
                     self.buffer = []
-                    try:
-                        await self.message.edit(self.text)
-                    except exceptions.bad_request_400.MessageNotModified:
-                        pass
+                elif len(self.buffer) == 1:
+                    self.text += f"<code>{self.buffer[0]}</code>\n"
+                    self.buffer = []
+                try:
+                    await self.message.edit(self.text)
+                except (exceptions.bad_request_400.MessageNotModified, exceptions.flood_420.FloodWait):
+                    pass
                 await asyncio.sleep(self.sleep)
             else:
                 break
