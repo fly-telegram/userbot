@@ -40,17 +40,22 @@ class Stream:
 
         self.text = text
         self.sleep = sleep
-
+        
+        self.buffer = []
+        self.text = ""
+        
     async def process(self):
         while True:
             line = await self.stream.readline()
             if line:
-                self.text += f"<code>{line.decode().strip()}</code>\n"
-
-                try:
-                    await self.message.edit(self.text)
-                except exceptions.bad_request_400.MessageNotModified:
-                    pass
+                self.buffer.append(line.decode().strip())
+                if len(self.buffer) % 2 == 0:
+                    for x in self.buffer:
+                        self.text += f"<code>{x}</code>\n"
+                    try:
+                        await self.message.edit(self.text)
+                    except exceptions.bad_request_400.MessageNotModified:
+                        pass
                 await asyncio.sleep(self.sleep)
             else:
                 break

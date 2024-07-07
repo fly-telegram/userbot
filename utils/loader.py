@@ -43,7 +43,7 @@ class Loader:
             for handler, group in handlers:
                 client.remove_handler(handler, group)  # remove handler
 
-        help_manager.remove_module(name)  # remove from help
+        self.help_manager.remove_module(name)  # remove from help
 
         if name in sys.modules:
             del sys.modules[name]  # remove from sys modules
