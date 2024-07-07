@@ -61,4 +61,4 @@ async def add_prefix(Client, message: Message):
         f"<code>prefixes: {' | '.join(prefixes)}</code>"
     )
 
-help_manager.add_module("core", ["addprefix", "restart"])
+help_manager.add_module("core", ["addprefix", "restart", "update"])

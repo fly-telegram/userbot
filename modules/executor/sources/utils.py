@@ -44,7 +44,7 @@ class Stream:
         while True:
             line = await self.stream.readline()
             if line:
-                self.text += f"<code>{self.buffer[0]}</code>\n<code>{self.buffer[1]}</code>\n"
+                self.text += f"<code>{line.decode().strip()}</code>\n"
                 try:
                     await self.message.edit(self.text)
                 except (exceptions.bad_request_400.MessageNotModified, exceptions.flood_420.FloodWait):
