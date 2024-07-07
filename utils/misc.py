@@ -2,6 +2,7 @@
 
 from typing import List, Optional
 from utils.config import account
+from utils.git import version
 
 prefix = account.get("prefixes")
 
@@ -34,3 +35,5 @@ class Builder:
     def remove_module(self, name: str) -> dict:
         del modules[name]
         return modules
+
+userbot_version = ".".join(map(str, version))

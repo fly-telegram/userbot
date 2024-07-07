@@ -118,7 +118,7 @@ async def load_module(Client, message: Message):
 
     author = info.get("meta", "author")
     description = info.get("meta", "description")
-    module_version = "".join(map(str, info.get("meta", "version")))
+    module_version = ".".join(map(str, info.get("meta", "version")))
 
     await message.edit(
         f"🕊 <b>{module_name} by {author} is loaded!</b>\n"
