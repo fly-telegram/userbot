@@ -60,7 +60,6 @@ class Stream:
             else:
                 break
 
-
 class AsyncTerminal:
     def __init__(self, message: Message, command: str, text: str, sleep: int):
         self.command = command
