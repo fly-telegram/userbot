@@ -66,11 +66,4 @@ async def add_prefix(Client, message: Message):
         f"<code>prefixes: {' | '.join(prefixes)}</code>"
     )
 
-@Client.on_message(
-    filters.command(prefixes,
-                    prefixes=prefixes) & filters.me
-)
-async def dual_prefix(Client, message: Message):
-    await message.edit(message.text[1:])
-
 help_manager.add_module("core", ["addprefix", "restart", "update"])
