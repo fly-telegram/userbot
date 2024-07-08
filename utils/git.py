@@ -2,7 +2,7 @@ from database.db import Database
 import git
 import os
 
-version = (1, 0, 1)
+version = (1, 0, 2)
 
 db = Database("./database/data.json")
 try:
