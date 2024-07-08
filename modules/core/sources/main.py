@@ -42,6 +42,8 @@ async def update(Client, message: Message):
             "text": "🕊 <b>Updated!</b>",
         },
     )
+    db.save()
+
     os.execl(sys.executable, sys.executable, "main.py")
 
 
