@@ -16,3 +16,13 @@ except git.exc.InvalidGitRepositoryError:
     origin = repo.create_remote("origin", db.get("core", "update"))
 
     repo_initialized = False
+
+def check_update() -> bool:
+    diff = repo.git.log(
+        [
+            f"HEAD..origin/{repo.active_branch.name}",
+            "--oneline"
+        ]
+    )
+
+    return True if diff else False

@@ -4,6 +4,7 @@ from inline.types import inline
 from utils.loader import Loader
 from utils.parse_arguments import parse
 from database.db import Database
+from utils.git import check_update
 
 import log
 import os
@@ -34,7 +35,8 @@ async def main(client: Client):
 
     logger = log.load(client)
 
-    logger.info("Userbot is started!")
+    update = "Update available!" if check_update() else "Up-To-Date"
+    logger.info(f"Userbot is started! ({update})")
 
     success_modules = 0
     failed_modules = 0
