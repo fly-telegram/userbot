@@ -41,10 +41,11 @@ async def main(client: Client):
     success_modules = 0
     failed_modules = 0
 
+    if not os.path.isdir('./dragon_modules'):
+        os.makedirs("dragon_modules")
+
     for module in os.listdir("./dragon_modules"):
         if os.path.isfile(os.path.join("./dragon_modules", module)):
-            if module == "README.MD":
-                pass
             try:
                 name = module.split(".py")[0]
                 await loader.load_dragon(name, client)
