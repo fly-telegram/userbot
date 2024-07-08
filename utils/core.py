@@ -43,6 +43,8 @@ async def main(client: Client):
 
     for module in os.listdir("./dragon_modules"):
         if os.path.isfile(os.path.join("./dragon_modules", module)):
+            if module == "README.MD":
+                pass
             try:
                 name = module.split(".py")[0]
                 await loader.load_dragon(name, client)
@@ -50,7 +52,7 @@ async def main(client: Client):
                 success_modules += 1
             except Exception as error:
                 logger.error(
-                    f"[LOADER] Failed load '{name}' module: {error}")
+                    f"[LOADER] Failed load '{name}' dragon module: {error}")
                 failed_modules += 1
 
     for module in os.listdir("./modules"):

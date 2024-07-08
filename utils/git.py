@@ -17,6 +17,7 @@ except git.exc.InvalidGitRepositoryError:
 
     repo_initialized = False
 
+
 def check_update() -> bool:
     diff = repo.git.log(
         [
