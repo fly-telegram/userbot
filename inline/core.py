@@ -87,7 +87,9 @@ class Inline:
         await self.bot.send_message(me.id,
                                     "🕊 <b>Fly-telegram userbot is loaded!</b>")
 
+        await self.bot.delete_webhook(drop_pending_updates=True) # skip updates
+
         asyncio.ensure_future(
             self.dispatcher.start_polling(
-                self.bot, skip_updates=True, handle_signals=False)
+                self.bot, handle_signals=False)
         )
