@@ -29,9 +29,6 @@ class Builder:
     def get_items(self):
         return modules.items()
 
-    def get_module(self, name: str) -> dict:
-        return modules[name]
-
     def remove_module(self, name: str) -> dict:
         del modules[name]
         return modules

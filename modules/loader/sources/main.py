@@ -11,6 +11,7 @@ import os
 from database.db import Database
 from utils.git import version
 
+from utils.misc import modules
 from .utils import prefixes, help_manager, loader
 
 
@@ -142,7 +143,7 @@ async def unload_module(Client, message: Message):
     module_name = message.command[1].lower()
     remove = True
 
-    dragon = help_manager.get_module(module_name)["is.dragon"]
+    dragon = modules[module_name]["is.dragon"]
 
     if "--no-remove" in message.command:
         remove = False
