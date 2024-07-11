@@ -51,9 +51,7 @@ class Loader:
             "executor",
         )
 
-    async def unload(
-        self, name: str, client: pyrogram.Client, remove: bool = True
-    ) -> bool:
+    async def unload(self, name: str, client: pyrogram.Client, remove: bool = True) -> bool:
         """Unload a module"""
         if name not in os.listdir(MODULES_DIR):
             raise NameError(f"Module '{name}' is not found!")
