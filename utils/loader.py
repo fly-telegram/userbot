@@ -3,6 +3,7 @@
 
 import importlib
 import shutil
+import ast
 import sys
 import os
 
@@ -122,8 +123,9 @@ class Loader:
             raise NameError(f"Dragon module '{name}' is not found!")
         founded_items = CodeAnalysis().analyze(path)
         if founded_items:
-            raise Exception(f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
-            
+            raise Exception(
+                f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+
         module = importlib.import_module(f"dragon_modules.{name}")
 
         # convert "modules_help" to "modules"
