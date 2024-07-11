@@ -34,12 +34,14 @@ class CodeAnalysis:
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
                 if isinstance(node.func, ast.Attribute):
-                    if '.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])) in self.functions:
-                        self.items.append('.'.join(
-                            reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])))
+                    attr_path = [node.func.attr]
+                    current = node.func.value
+                    while isinstance(current, ast.Attribute):
+                        attr_path.insert(0, current.attr)
+                        current = current.value
+                    self.items.append('.'.join(attr_path))
                 elif isinstance(node.func, ast.Name):
-                    if node.func.id in self.functions:
-                        self.items.append(node.func.id)
+                    self.items.append(node.func.id)
 
         return self.items
 
