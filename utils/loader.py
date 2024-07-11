@@ -19,32 +19,29 @@ DRAGON_MODULES_DIR = "dragon_modules"
 
 class CodeAnalysis:
     def __init__(self):
+        allowed = {}
         self.functions = (
             "eval",
             "exec",
             "pyrogram.raw.functions.account.DeleteAccount",
         )
         self.items = []
+    def analyze(self, module_code) -> Set[str]:
+        tree = ast.parse(module_code)
 
-    def analyze(self, path: str) -> Set[str]:
-        with open(path, 'r') as file:
-            code = file.read()
-
-        tree = ast.parse(code)
         for node in ast.walk(tree):
-            if isinstance(node, ast.Call):
+            elif isinstance(node, ast.Call):
+
                 if isinstance(node.func, ast.Attribute):
-                    attr_path = [node.func.attr]
-                    current = node.func.value
-                    while isinstance(current, ast.Attribute):
-                        attr_path.insert(0, current.attr)
-                        current = current.value
-                    self.items.append('.'.join(attr_path))
-                elif isinstance(node.func, ast.Name):
+                    if isinstance(node.func.value, ast.Call) and isinstance(node.func.value.func, ast.Name) and node.func.value.func.id == '__import__':
+                        module_name = node.func.value.args[0].s
+                        if module_name in self.allowed:
+                            self.items.append(module_name)
+
+                elif isinstance(node.func, ast.Name) and node.func.id in self.functions:
                     self.items.append(node.func.id)
-
-        return self.items
-
+    
+    return self.items
 
 class Loader:
     def __init__(self):
