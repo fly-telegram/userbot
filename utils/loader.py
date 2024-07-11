@@ -95,13 +95,14 @@ class Loader:
 
         for file in os.listdir(path):
             if file.endswith('.py'):
-                founded_items = CodeAnalysis.analyze(path)
+                path = os.path.join(MODULES_DIR, name, file)
+                founded_items = CodeAnalysis().analyze(path)
                 if founded_items:
                     raise Exception(
-                        f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+                        f"Malicious code was found in '{name}' module: ", ",".join(founded_items))
 
         module = importlib.import_module(
-            f"{MODULES_DIR}.{name}.sources.main"
+            f"modules.{name}.sources.main"
         )  # load module
 
         for obj_name, obj in vars(module).items():
@@ -115,14 +116,15 @@ class Loader:
         return True
 
     async def load_dragon(self, name: str, client: pyrogram.Client):
-        """"Load dragon module"""
-        if f"{name}.py" not in os.listdir(DRAGON_MODULES_DIR):
+        """Load dragon module"""
+        path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
+        if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
-       founded_items = CodeAnalysis.analyze(path)
+        founded_items = CodeAnalysis().analyze(path)
         if founded_items:
-            raise Exception(f"malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+            raise Exception(f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
             
-        module = importlib.import_module(f"{DRAGON_MODULES_DIR}.{name}")
+        module = importlib.import_module(f"dragon_modules.{name}")
 
         # convert "modules_help" to "modules"
         for module_name, commands in modules_help.items():
@@ -141,19 +143,19 @@ class Loader:
             for handler, group in handlers:
                 client.add_handler(handler, group)  # add handler
 
-    async def unload_dragon(self, name: str, client: pyrogram.Client, remove: bool = True
-                            ) -> bool:
-        """"Unload dragon modules"""
-        if f"{name}.py" not in os.listdir(DRAGON_MODULES_DIR):
+    async def unload_dragon(self, name: str, client: pyrogram.Client, remove: bool = True) -> bool:
+        """Unload dragon modules"""
+        path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
+        if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
 
-        module = importlib.import_module(f"{DRAGON_MODULES_DIR}.{name}")
+        module = importlib.import_module(f"dragon_modules.{name}")
         self.help_manager.remove_module(name)
 
         if name in sys.modules:
             del sys.modules[name]
 
         if remove:
-            os.remove(os.path.join(DRAGON_MODULES_DIR, f"{name}.py"))
+            os.remove(path)
 
         return True
