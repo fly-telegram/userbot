@@ -15,30 +15,33 @@ from .misc import Builder, modules_help
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 
+
 class CodeAnalysis:
     def __init__(self):
-        self.fucntions = (
+        self.functions = (
             "eval",
-           "exec",
-           "pyrogram.raw.functions.account.DeleteAccount",
+            "exec",
+            "pyrogram.raw.functions.account.DeleteAccount",
         )
         self.items = []
 
     def analyze(self, path: str) -> Set[str]:
         with open(path, 'r') as file:
             code = file.read()
-            
+
         tree = ast.parse(code)
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
                 if isinstance(node.func, ast.Attribute):
-                    if '.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])) in self.fuctions:
-                        self.items.append('.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])))
+                    if '.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])) in self.functions:
+                        self.items.append('.'.join(
+                            reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])))
                 elif isinstance(node.func, ast.Name):
                     if node.func.id in self.functions:
                         self.items.append(node.func.id)
-        
+
         return self.items
+
 
 class Loader:
     def __init__(self):
@@ -82,7 +85,7 @@ class Loader:
     async def load(self, name: str, client: pyrogram.Client) -> bool:
         """Load a module"""
         path = os.path.join(MODULES_DIR, name)
-        
+
         if name not in os.listdir(MODULES_DIR):
             raise NameError(f"Module '{name}' is not found!")
         elif "module.json" not in os.listdir(path):
@@ -94,7 +97,8 @@ class Loader:
             if file.endswith('.py'):
                 founded_items = CodeAnalysis.analyze(path)
                 if founded_items:
-                    raise Exception(f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+                    raise Exception(
+                        f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
 
         module = importlib.import_module(
             f"{MODULES_DIR}.{name}.sources.main"
