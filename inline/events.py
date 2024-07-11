@@ -1,3 +1,6 @@
+# Fly-telegram UserBot
+# this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
+
 from aiogram import Bot
 from aiogram import types, Router
 from aiogram.utils.keyboard import InlineKeyboardBuilder

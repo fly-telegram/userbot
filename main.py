@@ -1,3 +1,6 @@
+# Fly-telegram UserBot
+# this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
+
 from pyrogram import Client
 from pyrogram.enums.parse_mode import ParseMode
 

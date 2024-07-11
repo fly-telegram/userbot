@@ -1,4 +1,5 @@
-# core help and Dragon-Userbot
+# Fly-telegram UserBot
+# this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
 from typing import List, Optional
 from utils.config import account
