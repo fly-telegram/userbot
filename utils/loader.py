@@ -30,7 +30,7 @@ class CodeAnalysis:
         tree = ast.parse(module_code)
 
         for node in ast.walk(tree):
-            elif isinstance(node, ast.Call):
+            if isinstance(node, ast.Call):
 
                 if isinstance(node.func, ast.Attribute):
                     if isinstance(node.func.value, ast.Call) and isinstance(node.func.value.func, ast.Name) and node.func.value.func.id == '__import__':
