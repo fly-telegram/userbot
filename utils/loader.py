@@ -6,6 +6,7 @@ import shutil
 import sys
 import os
 
+from typing import Set
 
 import pyrogram
 
@@ -14,6 +15,30 @@ from .misc import Builder, modules_help
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 
+class CodeAnalysis:
+    def __init__(self):
+        self.fucntions = (
+            "eval",
+           "exec",
+           "pyrogram.raw.functions.account.DeleteAccount",
+        )
+        self.items = []
+
+    def analyze(self, path: str) -> Set[str]:
+        with open(path, 'r') as file:
+            code = file.read()
+            
+        tree = ast.parse(code)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Attribute):
+                    if '.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])) in self.fuctions:
+                        self.items.append('.'.join(reversed([node.func.attr] + [n.attr for n in reversed(node.func.value)])))
+                elif isinstance(node.func, ast.Name):
+                    if node.func.id in self.functions:
+                        self.items.append(node.func.id)
+        
+        return self.items
 
 class Loader:
     def __init__(self):
@@ -58,12 +83,20 @@ class Loader:
 
     async def load(self, name: str, client: pyrogram.Client) -> bool:
         """Load a module"""
+        path = os.path.join(MODULES_DIR, name)
+        
         if name not in os.listdir(MODULES_DIR):
             raise NameError(f"Module '{name}' is not found!")
-        elif "module.json" not in os.listdir(os.path.join(MODULES_DIR, name)):
+        elif "module.json" not in os.listdir(path):
             raise ValueError(
                 f"Module '{name}' is out of date or does not have a module information file."
             )
+
+        for file in os.listdir(path):
+            if file.endswith('.py'):
+                founded_items = CodeAnalysis.analyze(path)
+                if founded_items:
+                    raise Exception(f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
 
         module = importlib.import_module(
             f"{MODULES_DIR}.{name}.sources.main"
@@ -77,12 +110,16 @@ class Loader:
             for handler, group in handlers:
                 client.add_handler(handler, group)  # add handler
 
-        return True  # return true
+        return True
 
     async def load_dragon(self, name: str, client: pyrogram.Client):
         """"Load dragon module"""
         if f"{name}.py" not in os.listdir(DRAGON_MODULES_DIR):
             raise NameError(f"Dragon module '{name}' is not found!")
+       founded_items = CodeAnalysis.analyze(path)
+        if founded_items:
+            raise Exception(f"malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+            
         module = importlib.import_module(f"{DRAGON_MODULES_DIR}.{name}")
 
         # convert "modules_help" to "modules"
