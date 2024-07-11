@@ -26,6 +26,7 @@ class CodeAnalysis:
             "pyrogram.raw.functions.account.DeleteAccount",
         )
         self.items = []
+
     def analyze(self, module_code) -> Set[str]:
         tree = ast.parse(module_code)
 
@@ -40,8 +41,9 @@ class CodeAnalysis:
 
                 elif isinstance(node.func, ast.Name) and node.func.id in self.functions:
                     self.items.append(node.func.id)
-    
+
     return self.items
+
 
 class Loader:
     def __init__(self):
