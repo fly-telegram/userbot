@@ -83,7 +83,7 @@ async def info_cmd(client: Client, message: Message):
          photo="./assets/logo.jpg",
          caption=text.format(
              owner=me.username,
-             version=version,
+             version=".".join(map(str, version)),
              update=update,
              uptime=uptime(),
              ram=ram(),
