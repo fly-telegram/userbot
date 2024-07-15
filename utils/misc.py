@@ -41,14 +41,16 @@ class Builder:
 
 userbot_version = ".".join(map(str, version))
 
-init_time = 0
+init_time = time.perf_counter()
 
 def uptime() -> str:
     return str(
         datetime.timedelta(
             seconds=round(
-                time.perf_counter() - init_time)
-        ))
+                time.perf_counter() - init_time
+            )
+        )
+    )
         
 def ram() -> float:
     try:
