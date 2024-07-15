@@ -78,12 +78,19 @@ async def info_cmd(client: Client, message: Message):
     me = await client.get_me()
     github_url = db.get("core", "update", "GIT_ORIGIN")
     
+    userbot_version = ".".join(map(str, version))
+    
+    owner = '<a href="tg://user?id={}">{}</a>'.format(
+            me.id,
+            me.username
+        )
+    
     await client.send_photo(
          chat_id=message.chat.id,
          photo="./assets/logo.jpg",
          caption=text.format(
-             owner=me.username,
-             version=".".join(map(str, version)),
+             owner=owner,
+             version=userbot_version,
              update=update,
              uptime=uptime(),
              ram=ram(),

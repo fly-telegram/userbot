@@ -10,7 +10,7 @@ db = Database("./database/data.json")
 
 text = """
 <b>🕊️ fly telegram userbot</b>
-├─ <i><b>Owner</b></i>: {owner}
+├─ <i><b>Owner</b></i>: <b>{owner}</b>
 ├─ <i><b>Version</b></i>: <code>{version} ({update})</code>
 ├─ <i><b>Uptime</b></i>: <code>{uptime}</code>
 ├─<i><b>RAM</b></i>: </code>{ram}</code>

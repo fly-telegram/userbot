@@ -32,7 +32,7 @@ async def main(client: Client):
     if not parser.no_logo:
         print(logo)
 
-    init_time = time.time()
+    init_time = time.perf_counter()
 
     await client.start()
     await inline.load(client)
