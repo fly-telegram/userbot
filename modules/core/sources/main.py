@@ -76,7 +76,6 @@ async def addprefix_cmd(Client, message: Message):
 async def info_cmd(client: Client, message: Message):
     update = "Update available!" if check_update() else "Up-To-Date"
     me = await client.get_me()
-    uptime = uptime()
     ram = ram()
     github_url = db.get("core", "update", "GIT_ORIGIN")
     
@@ -87,7 +86,7 @@ async def info_cmd(client: Client, message: Message):
              owner=me.username,
              version=version,
              update=update,
-             uptime=uptime,
+             uptime=uptime(),
              ram=ram,
              github_url=github_url
          )
