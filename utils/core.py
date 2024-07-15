@@ -10,6 +10,7 @@ from database.db import Database
 from utils.git import check_update
 from utils.misc import init_time
 
+import time
 import log
 import os
 
