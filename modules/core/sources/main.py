@@ -9,7 +9,7 @@ import sys
 import os
 
 from utils.git import repo, origin
-from .utils import prefixes, db, help_manager
+from .utils import prefixes, db
 
 
 @Client.on_message(filters.command("restart", prefixes=prefixes) & filters.me)
@@ -68,5 +68,3 @@ async def add_prefix(Client, message: Message):
         f"🕊 <b>added new prefix: {prefix}</b>\n"
         f"<code>prefixes: {' | '.join(prefixes)}</code>"
     )
-
-help_manager.add_module("core", ["addprefix", "restart", "update"])

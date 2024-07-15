@@ -11,7 +11,7 @@ from .utils import (
 
 
 @Client.on_message(filters.command("help", prefixes) & filters.me)
-async def help(Client, message: Message):
+async def help_cmd(Client, message: Message):
     items = sorted(help_manager.get_items(),
                    key=lambda x: (len(x[1]['commands']), x[0]))
 
@@ -22,5 +22,3 @@ async def help(Client, message: Message):
     )
     await message.edit("🕊 <b>All commands</b>\n" f"{all_commands}")
 
-
-help_manager.add_module("help", ["help"])

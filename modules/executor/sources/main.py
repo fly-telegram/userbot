@@ -7,8 +7,8 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from .utils import (
-    help_manager, prefixes,
-    localenv, ERROR_EMOJI,
+    prefixes, localenv, 
+    ERROR_EMOJI,
     DONE_EMOJI, SECRET_TEXT,
     AsyncTerminal
 )
@@ -17,7 +17,7 @@ command_processes = {}  # {"chatID": {"messageID": "PROC"}}
 
 
 @Client.on_message(filters.command(["eval", "e", "python"], prefixes) & filters.me)
-async def eval(Client, message: Message):
+async def eval_cmd(Client, message: Message):
     if len(message.command) == 1:
         await message.edit("❌ <b>The code has to be entered!</b>")
         return
@@ -43,7 +43,7 @@ async def eval(Client, message: Message):
 
 
 @Client.on_message(filters.command(["sh", "bash", "terminal"], prefixes) & filters.me)
-async def terminal(Client, message: Message):
+async def terminal_cmd(Client, message: Message):
     global command_processes
 
     if len(message.command) == 1:
@@ -72,7 +72,7 @@ async def terminal(Client, message: Message):
 
 
 @Client.on_message(filters.command(["terminate", "kill", "pkill"], prefixes) & filters.me)
-async def kill(Client, message: Message):
+async def kill_cmd(Client, message: Message):
     reply = message.reply_to_message
     if not reply:
         await message.edit("❌ <b>Terminal?</b>")
@@ -87,7 +87,7 @@ async def kill(Client, message: Message):
 
 
 @Client.on_message(filters.command(["terminals", "processes"], prefixes) & filters.me)
-async def terminals(Client, message: Message):
+async def terminals_cmd(Client, message: Message):
     items = sorted(command_processes.items())
     terminals = "\n".join(
         f"├─ <i><a href='https://t.me/c/{chat_id}/{message_id}'>💻 {i+1} Terminal</a></i>" if i < len(items) - 1 else
@@ -99,5 +99,3 @@ async def terminals(Client, message: Message):
     await message.edit(
         "🕊 <b>Terminals</b>\n" f"{terminals if terminals else not_terminals}"
     )
-
-help_manager.add_module("executor", ["eval", "terminal", "kill", "terminals"])

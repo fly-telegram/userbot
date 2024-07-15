@@ -2,6 +2,7 @@
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
 import importlib
+import inspect
 import shutil
 import ast
 import sys
@@ -19,7 +20,6 @@ DRAGON_MODULES_DIR = "dragon_modules"
 
 class CodeAnalysis:
     def __init__(self):
-        allowed = {}
         self.functions = (
             "eval",
             "exec",
@@ -107,6 +107,10 @@ class Loader:
             f"modules.{name}.sources.main"
         )  # load module
 
+        # add to help
+        commands = [func[:-3] for func, _ in inspect.getmembers(module, inspect.isfunction) if func.endswith("'_cmd")]
+        self.help_manager.add_module(name, commands)
+        
         for obj_name, obj in vars(module).items():
             handlers = getattr(obj, "handlers", [])
             if not isinstance(handlers, list):

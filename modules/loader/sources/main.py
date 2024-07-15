@@ -21,7 +21,7 @@ from .utils import prefixes, help_manager, loader
 @Client.on_message(
     filters.command(["load", "lm", "loadmod"], prefixes) & filters.me
 )
-async def load_module(Client, message: Message):
+async def load_cmd(Client, message: Message):
     """
     Load a module from a ZIP file or dragon module
     """
@@ -135,7 +135,7 @@ async def load_module(Client, message: Message):
     filters.command(["unload", "unlm", "unloadmod"],
                     prefixes) & filters.me
 )
-async def unload_module(Client, message: Message):
+async def unload_cmd(Client, message: Message):
     """ "
     Unload module by name.
     """
@@ -165,5 +165,3 @@ async def unload_module(Client, message: Message):
         return
 
     await message.edit(f"🕊 <b>{module_name}</b>\n" "<code>Module unloaded!</code>")
-
-help_manager.add_module("loader", ["load", "unload"])
