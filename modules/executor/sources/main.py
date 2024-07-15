@@ -7,7 +7,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from .utils import (
-    prefixes, localenv, 
+    prefixes, localenv,
     ERROR_EMOJI,
     DONE_EMOJI, SECRET_TEXT,
     AsyncTerminal

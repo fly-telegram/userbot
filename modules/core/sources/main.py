@@ -8,9 +8,9 @@ from git import GitCommandError
 import sys
 import os
 
-from utils.git import repo, origin
-from .utils import prefixes, db
-
+from utils.git import repo, origin, version
+from utils.misc import uptime, ram
+from .utils import prefixes, db, text
 
 @Client.on_message(filters.command("restart", prefixes=prefixes) & filters.me)
 async def restart_cmd(Client, message: Message):
@@ -54,7 +54,7 @@ async def update_cmd(Client, message: Message):
     filters.command(["addprefix", "addpref"],
                     prefixes=prefixes) & filters.me
 )
-async def add_prefix_cmd(Client, message: Message):
+async def addprefix_cmd(Client, message: Message):
     if len(message.command) <= 1:
         await message.edit("🕊 <b>The prefix must be entered.</b>")
         return
@@ -67,4 +67,28 @@ async def add_prefix_cmd(Client, message: Message):
     await message.edit(
         f"🕊 <b>added new prefix: {prefix}</b>\n"
         f"<code>prefixes: {' | '.join(prefixes)}</code>"
+    )
+
+@Client.on_message(
+    filters.command(["userbot", "info", "fly-telegram", "flytg"],
+                    prefixes=prefixes) & filters.me
+)
+async def info_cmd(client: Client, message: Message):
+    update = "Update available!" if check_update() else "Up-To-Date"
+    me = await client.get_me()
+    uptime = uptime()
+    ram = ram()
+    github_url = db.get("core", "update", "GIT_ORIGIN")
+    
+    await client.send_photo(
+         chat_id=message.chat.id,
+         photo="./assets/logo.jpg",
+         caption=text.format(
+             owner=me.username,
+             version=version,
+             update=update,
+             uptime=uptime,
+             ram=ram,
+             github_url=github_url
+         )
     )

@@ -21,4 +21,3 @@ async def help_cmd(Client, message: Message):
         for i, (module, data) in enumerate(items)
     )
     await message.edit("🕊 <b>All commands</b>\n" f"{all_commands}")
-

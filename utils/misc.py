@@ -2,8 +2,12 @@
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
 from typing import List, Optional
+
 from utils.config import account
 from utils.git import version
+from utils.core import init_time
+
+import datetime
 
 prefix = account.get("prefixes")
 
@@ -36,3 +40,23 @@ class Builder:
 
 
 userbot_version = ".".join(map(str, version))
+
+def uptime() -> str:
+    return str(
+        datetime.timedelta(
+            seconds=round(
+                time.perf_counter() - init_time)
+        ))
+        
+def ram() -> float:
+    try:
+        import psutil
+
+        process = psutil.Process(os.getpid())
+        mem = process.memory_info()[0] / 2.0**20
+        for child in process.children(recursive=True):
+            mem += child.memory_info()[0] / 2.0**20
+
+        return round(mem, 1)
+    except Exception:
+        return 0
