@@ -13,7 +13,7 @@ from .utils import prefixes, db
 
 
 @Client.on_message(filters.command("restart", prefixes=prefixes) & filters.me)
-async def restart(Client, message: Message):
+async def restart_cmd(Client, message: Message):
     db.set(
         "restart_info",
         {
@@ -29,7 +29,7 @@ async def restart(Client, message: Message):
 
 
 @Client.on_message(filters.command("update", prefixes=prefixes) & filters.me)
-async def update(Client, message: Message):
+async def update_cmd(Client, message: Message):
     await message.edit("🕊 <b>Updating...</b>")
 
     try:
@@ -54,7 +54,7 @@ async def update(Client, message: Message):
     filters.command(["addprefix", "addpref"],
                     prefixes=prefixes) & filters.me
 )
-async def add_prefix(Client, message: Message):
+async def add_prefix_cmd(Client, message: Message):
     if len(message.command) <= 1:
         await message.edit("🕊 <b>The prefix must be entered.</b>")
         return
