@@ -5,9 +5,9 @@ from typing import List, Optional
 
 from utils.config import account
 from utils.git import version
-from utils.core import init_time
 
 import datetime
+import time
 
 prefix = account.get("prefixes")
 
@@ -40,6 +40,8 @@ class Builder:
 
 
 userbot_version = ".".join(map(str, version))
+
+init_time = 0
 
 def uptime() -> str:
     return str(

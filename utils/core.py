@@ -8,6 +8,7 @@ from utils.loader import Loader
 from utils.parse_arguments import parse
 from database.db import Database
 from utils.git import check_update
+from utils.misc import init_time
 
 import log
 import os
@@ -26,12 +27,11 @@ parser = parse()
 loader = Loader()
 db = Database("./database/data.json")
 
-init_time = 0
-
-
 async def main(client: Client):
     if not parser.no_logo:
         print(logo)
+
+    init_time = time.time()
 
     await client.start()
     await inline.load(client)
