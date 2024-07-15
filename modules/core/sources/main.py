@@ -8,7 +8,7 @@ from git import GitCommandError
 import sys
 import os
 
-from utils.git import repo, origin, version
+from utils.git import repo, origin, version, check_update
 from utils.misc import uptime, ram
 from .utils import prefixes, db, text
 
