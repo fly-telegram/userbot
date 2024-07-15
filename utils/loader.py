@@ -108,7 +108,7 @@ class Loader:
         )  # load module
 
         # add to help
-        commands = [func[:-3] for func, _ in inspect.getmembers(module, inspect.isfunction) if func.endswith("'_cmd")]
+        commands = [func[:-4] for func, _ in inspect.getmembers(module, inspect.isfunction) if func.endswith("_cmd")]
         self.help_manager.add_module(name, commands)
         
         for obj_name, obj in vars(module).items():
