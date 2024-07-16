@@ -43,6 +43,7 @@ userbot_version = ".".join(map(str, version))
 
 init_time = time.perf_counter()
 
+
 def uptime() -> str:
     return str(
         datetime.timedelta(
@@ -51,7 +52,8 @@ def uptime() -> str:
             )
         )
     )
-        
+
+
 def ram() -> float:
     try:
         import psutil

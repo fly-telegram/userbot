@@ -28,6 +28,7 @@ parser = parse()
 loader = Loader()
 db = Database("./database/data.json")
 
+
 async def main(client: Client):
     if not parser.no_logo:
         print(logo)

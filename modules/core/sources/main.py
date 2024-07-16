@@ -13,6 +13,7 @@ from utils.git import repo, origin, version, check_update
 from utils.misc import uptime, ram
 from .utils import prefixes, db, text
 
+
 @Client.on_message(filters.command("restart", prefixes=prefixes) & loader.owner)
 async def restart_cmd(Client, message: Message):
     db.set(
@@ -70,6 +71,7 @@ async def addprefix_cmd(Client, message: Message):
         f"<code>prefixes: {' | '.join(prefixes)}</code>"
     )
 
+
 @Client.on_message(
     filters.command(["userbot", "info", "fly-telegram", "flytg"],
                     prefixes=prefixes) & loader.owner
@@ -78,23 +80,23 @@ async def info_cmd(client: Client, message: Message):
     update = "Update available!" if check_update() else "Up-To-Date"
     me = await client.get_me()
     github_url = db.get("core", "update", "GIT_ORIGIN")
-    
+
     userbot_version = ".".join(map(str, version))
-    
+
     owner = '<a href="tg://user?id={}">{}</a>'.format(
             me.id,
             me.username
-        )
-    
+    )
+
     await client.send_photo(
-         chat_id=message.chat.id,
-         photo="./assets/logo.jpg",
-         caption=text.format(
-             owner=owner,
-             version=userbot_version,
-             update=update,
-             uptime=uptime(),
-             ram=ram(),
-             github_url=github_url
-         )
+        chat_id=message.chat.id,
+        photo="./assets/logo.jpg",
+        caption=text.format(
+            owner=owner,
+            version=userbot_version,
+            update=update,
+            uptime=uptime(),
+            ram=ram(),
+            github_url=github_url
+        )
     )

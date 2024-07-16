@@ -15,15 +15,18 @@ from pyrogram.types import Message
 from pyrogram.errors import exceptions
 
 from .misc import Builder, modules_help
-from .config import account 
+from .config import account
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 
-def owner_filter(_, client: Client, message: Message) -> bool:
-    return message.from_user.id in account.get("owner") or message.from_user.id == client.me.id
+
+def owner_filter(_, __, message: Message) -> bool:
+    return bool(message.from_user.id in account.get("owner") or message.from_user.id == client.me.id)
+
 
 owner = filters.create(owner_filter)
+
 
 class CodeAnalysis:
     def __init__(self):
