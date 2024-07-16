@@ -8,6 +8,7 @@ from utils.git import version
 
 import datetime
 import time
+import os
 
 prefix = account.get("prefixes")
 
