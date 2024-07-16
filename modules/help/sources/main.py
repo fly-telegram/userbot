@@ -4,13 +4,14 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
+from utils import loader
 from .utils import (
     help_manager, prefixes,
     DRAGON_EMOJI, EMOJI
 )
 
 
-@Client.on_message(filters.command("help", prefixes) & filters.me)
+@Client.on_message(filters.command("help", prefixes) & loader.owner)
 async def help_cmd(Client, message: Message):
     items = sorted(help_manager.get_items(),
                    key=lambda x: (len(x[1]['commands']), x[0]))

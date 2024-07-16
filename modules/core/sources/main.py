@@ -8,11 +8,12 @@ from git import GitCommandError
 import sys
 import os
 
+from utils import loader
 from utils.git import repo, origin, version, check_update
 from utils.misc import uptime, ram
 from .utils import prefixes, db, text
 
-@Client.on_message(filters.command("restart", prefixes=prefixes) & filters.me)
+@Client.on_message(filters.command("restart", prefixes=prefixes) & loader.owner)
 async def restart_cmd(Client, message: Message):
     db.set(
         "restart_info",
@@ -28,7 +29,7 @@ async def restart_cmd(Client, message: Message):
     os.execl(sys.executable, sys.executable, "main.py")
 
 
-@Client.on_message(filters.command("update", prefixes=prefixes) & filters.me)
+@Client.on_message(filters.command("update", prefixes=prefixes) & loader.owner)
 async def update_cmd(Client, message: Message):
     await message.edit("🕊 <b>Updating...</b>")
 
@@ -52,7 +53,7 @@ async def update_cmd(Client, message: Message):
 
 @Client.on_message(
     filters.command(["addprefix", "addpref"],
-                    prefixes=prefixes) & filters.me
+                    prefixes=prefixes) & loader.owner
 )
 async def addprefix_cmd(Client, message: Message):
     if len(message.command) <= 1:
@@ -71,7 +72,7 @@ async def addprefix_cmd(Client, message: Message):
 
 @Client.on_message(
     filters.command(["userbot", "info", "fly-telegram", "flytg"],
-                    prefixes=prefixes) & filters.me
+                    prefixes=prefixes) & loader.owner
 )
 async def info_cmd(client: Client, message: Message):
     update = "Update available!" if check_update() else "Up-To-Date"

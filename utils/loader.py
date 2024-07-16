@@ -10,13 +10,20 @@ import os
 
 from typing import Set
 
-import pyrogram
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from pyrogram.errors import exceptions
 
 from .misc import Builder, modules_help
+from .config import account 
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 
+def owner_filter(_, client: Client, message: Message) -> bool:
+    return message.from_user.id in account.get("owner") or message.from_user.id == client.me.id
+
+owner = filters.create(owner_filter)
 
 class CodeAnalysis:
     def __init__(self):
@@ -56,7 +63,7 @@ class Loader:
             "executor",
         )
 
-    async def unload(self, name: str, client: pyrogram.Client, remove: bool = True) -> bool:
+    async def unload(self, name: str, client: Client, remove: bool = True) -> bool:
         """Unload a module"""
         if name not in os.listdir(MODULES_DIR):
             raise NameError(f"Module '{name}' is not found!")
@@ -84,7 +91,7 @@ class Loader:
 
         return True
 
-    async def load(self, name: str, client: pyrogram.Client) -> bool:
+    async def load(self, name: str, client: Client) -> bool:
         """Load a module"""
         path = os.path.join(MODULES_DIR, name)
 
@@ -122,7 +129,7 @@ class Loader:
 
         return True
 
-    async def load_dragon(self, name: str, client: pyrogram.Client):
+    async def load_dragon(self, name: str, client: Client):
         """Load dragon module"""
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
@@ -151,7 +158,7 @@ class Loader:
             for handler, group in handlers:
                 client.add_handler(handler, group)  # add handler
 
-    async def unload_dragon(self, name: str, client: pyrogram.Client, remove: bool = True) -> bool:
+    async def unload_dragon(self, name: str, client: Client, remove: bool = True) -> bool:
         """Unload dragon modules"""
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
