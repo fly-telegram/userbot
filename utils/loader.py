@@ -24,7 +24,7 @@ DRAGON_MODULES_DIR = "dragon_modules"
 def owner_filter(_, __, message: Message) -> bool:
     return bool(
         message.from_user.id in account.get("owners") 
-        or message.from_user.id == client.me.id
+        or message.from_user.is_self
     )
 
 
