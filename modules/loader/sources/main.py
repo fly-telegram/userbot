@@ -13,13 +13,13 @@ import os
 
 from database.db import Database
 from utils.git import version
-from utils import loader
+from utils.loader import owner
 from utils.misc import modules
 from .utils import prefixes, help_manager, loader
 
 
 @Client.on_message(
-    filters.command(["load", "lm", "loadmod"], prefixes) & loader.owner
+    filters.command(["load", "lm", "loadmod"], prefixes) & owner
 )
 async def load_cmd(Client, message: Message):
     """
@@ -133,7 +133,7 @@ async def load_cmd(Client, message: Message):
 
 @Client.on_message(
     filters.command(["unload", "unlm", "unloadmod"],
-                    prefixes) & loader.owner
+                    prefixes) & owner
 )
 async def unload_cmd(Client, message: Message):
     """ "
