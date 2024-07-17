@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 
 from . import events
 from utils.conv import Conversation
-from database.db import Database
+from database.types import db
 
 import logging
 import random
@@ -65,7 +65,6 @@ class Inline:
         return token
 
     async def load(self, client: Client):
-        db = Database("./database/data.json")
         token = db.get("inline_token")
 
         if not token:
