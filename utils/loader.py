@@ -15,7 +15,7 @@ from pyrogram.types import Message
 from pyrogram.errors import exceptions
 
 from .misc import Builder, modules_help
-from .config import account
+from database.types import account 
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"

@@ -1,13 +1,12 @@
 # Fly-telegram UserBot
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
-from database.db import Database
+from database.types import db
 import git
 import os
 
 version = (1, 0, 3)
 
-db = Database("./database/data.json")
 try:
     repo = git.Repo(os.path.dirname(os.path.abspath(__name__)))
     origin = repo.remote("origin")

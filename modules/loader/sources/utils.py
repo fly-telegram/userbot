@@ -1,7 +1,7 @@
 # Fly-telegram UserBot
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
-from utils.config import account
+from database.types import db
 from utils.loader import Loader
 from utils.misc import Builder
 

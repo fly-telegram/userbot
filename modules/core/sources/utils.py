@@ -1,12 +1,9 @@
 # Fly-telegram UserBot
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
-from database.db import Database
-
-from utils.config import account
+from database.types import account, db
 
 prefixes = account.get("prefixes")
-db = Database("./database/data.json")
 
 text = """
 <b>🕊️ fly telegram userbot</b>

@@ -6,7 +6,7 @@ from pyrogram import Client, idle
 from inline.types import inline
 from utils.loader import Loader
 from utils.parse_arguments import parse
-from database.db import Database
+from database.types import db
 from utils.git import check_update
 from utils.misc import init_time
 
@@ -26,7 +26,6 @@ logo = """
 
 parser = parse()
 loader = Loader()
-db = Database("./database/data.json")
 
 
 async def main(client: Client):

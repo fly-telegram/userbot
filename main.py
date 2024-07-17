@@ -5,7 +5,7 @@ from pyrogram import Client
 from pyrogram.enums.parse_mode import ParseMode
 
 from utils.parse_arguments import parse
-from utils.config import account
+from database.types import account
 from utils.core import main
 from utils.git import *
 

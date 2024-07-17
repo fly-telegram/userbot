@@ -3,7 +3,7 @@
 
 from typing import List, Optional
 
-from utils.config import account
+from database.types import account 
 from utils.git import version
 
 import datetime
