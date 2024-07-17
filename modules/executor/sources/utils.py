@@ -30,8 +30,8 @@ def localenv(message: Message,
         "app": client,
         "c": client,
         "builder": Builder,
-        "database": database,
-        "db": database
+        "database": db,
+        "db": db
     }
 
 
