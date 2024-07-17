@@ -11,7 +11,7 @@ import shutil
 import sys
 import os
 
-from database.db import Database
+from database.database import Database
 from utils.git import version
 from utils.loader import owner
 from utils.misc import modules
