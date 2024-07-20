@@ -24,4 +24,4 @@ def check_update() -> bool:
     diff = repo.git.log(
         [f"HEAD..origin/{repo.active_branch.name}", "--oneline"])
     
-    return True if dff else False
+    return True if diff else False
