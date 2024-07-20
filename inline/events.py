@@ -4,11 +4,12 @@
 from aiogram import Bot
 from aiogram import types, Router
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.filters.command import Command
 
 router = Router()
 
 
-@router.message()
+@router.message(Command("start"))
 async def main_handler(message: types.Message) -> types.Message:
     builder = InlineKeyboardBuilder()
 

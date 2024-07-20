@@ -22,10 +22,6 @@ except git.exc.InvalidGitRepositoryError:
 
 def check_update() -> bool:
     diff = repo.git.log(
-        [
-            f"HEAD..origin/{repo.active_branch.name}",
-            "--oneline"
-        ]
-    )
-
-    return True if diff else False
+        [f"HEAD..origin/{repo.active_branch.name}", "--oneline"])
+    
+    return True if dff else False
