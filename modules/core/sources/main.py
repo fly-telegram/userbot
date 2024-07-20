@@ -88,6 +88,7 @@ async def info_cmd(client: Client, message: Message):
             me.username
     )
 
+    await message.delete()
     await client.send_photo(
         chat_id=message.chat.id,
         photo="./assets/logo.jpg",

@@ -19,7 +19,7 @@ from database.types import account
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
-
+loaded_modules = []
 
 def owner_filter(_, __, message: Message) -> bool:
     return bool(
@@ -92,6 +92,9 @@ class Loader:
         if name in sys.modules:
             del sys.modules[name]  # remove from sys modules
 
+        if module in loaded_modules:
+            loaded_modules.remove(module)
+
         if remove:
             shutil.rmtree(os.path.join(MODULES_DIR, name))
 
@@ -119,6 +122,7 @@ class Loader:
         module = importlib.import_module(
             f"modules.{name}.sources.main"
         )  # load module
+        loaded_modules.append(module)
 
         # add to help
         commands = [func[:-4] for func, _ in inspect.getmembers(
@@ -146,6 +150,7 @@ class Loader:
                 f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
 
         module = importlib.import_module(f"dragon_modules.{name}")
+        loaded_modules.append(module)
 
         # convert "modules_help" to "modules"
         for module_name, commands in modules_help.items():
@@ -175,6 +180,9 @@ class Loader:
 
         if name in sys.modules:
             del sys.modules[name]
+
+        if module in loaded_modules:
+            loaded_modules.remove(module)
 
         if remove:
             os.remove(path)

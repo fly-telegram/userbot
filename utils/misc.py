@@ -16,7 +16,6 @@ modules_help = {}
 
 modules = {}
 
-
 class Builder:
     def add_module(
         self,
@@ -53,7 +52,6 @@ def uptime() -> str:
             )
         )
     )
-
 
 def ram() -> float:
     try:
