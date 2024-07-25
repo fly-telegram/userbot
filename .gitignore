@@ -2,3 +2,4 @@ account/*.session
 account/*.session-journal
 dragon_modules/*
 database/data.json
+venv

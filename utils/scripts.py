@@ -20,8 +20,6 @@ def import_library(library_name: str, package_name: str = None):
     try:
         module = importlib.import_module(library_name)
     except ImportError:
-        pip = subprocess.run(
-            [sys.executable, "-m", "pip", "install", package_name]
-        )
+        subprocess.run([sys.executable, "-m", "pip", "install", package_name])
 
     return module

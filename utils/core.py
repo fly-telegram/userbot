@@ -8,9 +8,7 @@ from utils.loader import Loader
 from utils.parse_arguments import parse
 from database.types import db
 from utils.git import check_update
-from utils.misc import init_time
 
-import time
 import log
 import os
 
@@ -43,7 +41,7 @@ async def main(client: Client):
     success_modules = 0
     failed_modules = 0
 
-    if not os.path.isdir('./dragon_modules'):
+    if not os.path.isdir("./dragon_modules"):
         os.makedirs("dragon_modules")
 
     for module in os.listdir("./dragon_modules"):
@@ -54,8 +52,7 @@ async def main(client: Client):
                 logger.info(f"[LOADER] Dragon module '{name}' loaded")
                 success_modules += 1
             except Exception as error:
-                logger.error(
-                    f"[LOADER] Failed load '{name}' dragon module: {error}")
+                logger.error(f"[LOADER] Failed load '{name}' dragon module: {error}")
                 failed_modules += 1
 
     for module in os.listdir("./modules"):
@@ -65,8 +62,7 @@ async def main(client: Client):
                 logger.info(f"[LOADER] Module '{module}' loaded")
                 success_modules += 1
             except Exception as error:
-                logger.error(
-                    f"[LOADER] Failed load '{module}' module: {error}")
+                logger.error(f"[LOADER] Failed load '{module}' module: {error}")
                 failed_modules += 1
 
     logger.info(
