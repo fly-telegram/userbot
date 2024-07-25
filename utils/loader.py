@@ -38,10 +38,10 @@ def command(
     ) -> Callable:
     """original: https://github.com/pyrogram/pyrogram/blob/master/pyrogram/methods/decorators/on_message.py"""
     def decorator(func: Callable) -> Callable:
-        filters = owner & filters.command(name)
+        command_filters = owner & filters.command(name)
         
         if isinstance(client, pyrogram.Client):
-            client.add_handler(pyrogram.handlers.MessageHandler(func, filters), group)
+            client.add_handler(pyrogram.handlers.MessageHandler(func, command_filters), group)
         elif isinstance(client, Filter) or client is None:
             if not hasattr(func, "handlers"):
                 func.handlers = []
@@ -49,7 +49,7 @@ def command(
             func.handlers.append(
                 (
                     pyrogram.handlers.MessageHandler(func, client),
-                    group if filters is None else filters
+                    group if client is None else filters
                 )
             )
 
