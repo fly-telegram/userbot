@@ -11,7 +11,7 @@ from .utils import (
 )
 
 
-@loader.command(Client, "help")
+@Client.on_message(filters.command(["help"], prefixes) & loader.owner)
 async def help_cmd(Client, message: Message):
     items = sorted(help_manager.get_items(),
                    key=lambda x: (len(x[1]['commands']), x[0]))
