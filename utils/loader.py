@@ -10,6 +10,7 @@ import os
 
 from typing import Set, Callable
 
+import pyrogram 
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import exceptions
