@@ -156,12 +156,14 @@ class Loader:
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
-        founded_items = CodeAnalysis().analyze(path)
-        if founded_items:
-            raise Exception(
-                f"Malicious code was found in '{name}' dragon module: ",
-                ",".join(founded_items),
-            )
+            
+        if check_code:
+            founded_items = CodeAnalysis().analyze(path)
+            if founded_items:
+                raise Exception(
+                    f"Malicious code was found in '{name}' dragon module: ",
+                    ",".join(founded_items),
+                )
 
         module = importlib.import_module(f"dragon_modules.{name}")
         loaded_modules.append(module)
