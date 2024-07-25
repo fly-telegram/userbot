@@ -11,7 +11,6 @@ from . import events
 from utils.conv import Conversation
 from database.types import db
 
-import logging
 import random
 import re
 import string
@@ -25,8 +24,9 @@ class Inline:
         self.errors_text = ["Sorry.", "That I cannot do.", "too many attempts"]
 
     async def create(self, client: Client, botfather: str = "@BotFather") -> str:
-        id = "".join(random.choice(string.ascii_letters + string.digits)
-                     for _ in range(5))
+        id = "".join(
+            random.choice(string.ascii_letters + string.digits) for _ in range(5)
+        )
         me = await client.get_me()
         username = f"flyTG_{id}_bot"
         display_name = f"🕊 Fly-telegram of {me.first_name}"
@@ -38,7 +38,7 @@ class Inline:
             username,
             "/setinline",
             f"@{username}",
-            "🕊 fly-telegram: "
+            "🕊 fly-telegram: ",
         ]
 
         pattern = r"Use this token to access the HTTP API:\n([0-9]+:[A-Za-z0-9_]+)"
@@ -74,8 +74,7 @@ class Inline:
 
         try:
             self.bot = Bot(
-                token=token,
-                default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+                token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
             )
         except TelegramUnauthorizedError:
             db.set("inline_token", "")
@@ -86,10 +85,10 @@ class Inline:
         self.dispatcher.include_router(events.router)
 
         me = await client.get_me()
-        await self.bot.send_message(me.id,
-                                    "🕊 <b>Fly-telegram userbot is loaded!</b>")
+        await self.bot.send_message(me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
 
         asyncio.ensure_future(
             self.dispatcher.start_polling(
-                self.bot, skip_updates=True, handle_signals=False)
+                self.bot, skip_updates=True, handle_signals=False
+            )
         )

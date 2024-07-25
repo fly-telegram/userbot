@@ -8,28 +8,28 @@ import ast
 import sys
 import os
 
-from typing import Set, Callable
+from typing import Set
 
-import pyrogram 
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from pyrogram.errors import exceptions
 
 from .misc import Builder, modules_help
-from database.types import account 
+from database.types import account
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 loaded_modules = []
 
+
 class Filters:
     def owner_filter(_, __, message: Message) -> bool:
         return bool(
-            message.from_user.id in account.get("owners") 
-            or message.from_user.is_self
+            message.from_user.id in account.get("owners") or message.from_user.is_self
         )
 
+
 owner = filters.create(Filters.owner_filter)
+
 
 class CodeAnalysis:
     def __init__(self):
@@ -41,16 +41,20 @@ class CodeAnalysis:
         self.items = []
 
     def analyze(self, path: str) -> Set[str]:
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             code = file.read()
-        
+
         tree = ast.parse(code)
 
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
 
                 if isinstance(node.func, ast.Attribute):
-                    if isinstance(node.func.value, ast.Call) and isinstance(node.func.value.func, ast.Name) and node.func.value.func.id == '__import__':
+                    if (
+                        isinstance(node.func.value, ast.Call)
+                        and isinstance(node.func.value.func, ast.Name)
+                        and node.func.value.func.id == "__import__"
+                    ):
                         module_name = node.func.value.args[0].s
                         if module_name in self.allowed:
                             self.items.append(module_name)
@@ -79,8 +83,7 @@ class Loader:
         if name in self.core_modules:
             raise PermissionError("Cannot unload system modules!")
 
-        module = importlib.import_module(
-            f"modules.{name}.sources.main")  # load module
+        module = importlib.import_module(f"modules.{name}.sources.main")  # load module
 
         for obj_name, obj in vars(module).items():
             handlers = getattr(obj, "handlers", [])
@@ -115,21 +118,24 @@ class Loader:
             )
 
         for file in os.listdir(path):
-            if file.endswith('.py'):
+            if file.endswith(".py"):
                 path = os.path.join(MODULES_DIR, name, file)
                 founded_items = CodeAnalysis().analyze(path)
                 if founded_items:
                     raise Exception(
-                        f"Malicious code was found in '{name}' module: ", ",".join(founded_items))
+                        f"Malicious code was found in '{name}' module: ",
+                        ",".join(founded_items),
+                    )
 
-        module = importlib.import_module(
-            f"modules.{name}.sources.main"
-        )  # load module
+        module = importlib.import_module(f"modules.{name}.sources.main")  # load module
         loaded_modules.append(module)
 
         # add to help
-        commands = [func[:-4] for func, _ in inspect.getmembers(
-            module, inspect.isfunction) if func.endswith("_cmd")]
+        commands = [
+            func[:-4]
+            for func, _ in inspect.getmembers(module, inspect.isfunction)
+            if func.endswith("_cmd")
+        ]
         self.help_manager.add_module(name, commands)
 
         for obj_name, obj in vars(module).items():
@@ -150,7 +156,9 @@ class Loader:
         founded_items = CodeAnalysis().analyze(path)
         if founded_items:
             raise Exception(
-                f"Malicious code was found in '{name}' dragon module: ", ",".join(founded_items))
+                f"Malicious code was found in '{name}' dragon module: ",
+                ",".join(founded_items),
+            )
 
         module = importlib.import_module(f"dragon_modules.{name}")
         loaded_modules.append(module)
@@ -158,11 +166,8 @@ class Loader:
         # convert "modules_help" to "modules"
         for module_name, commands in modules_help.items():
             self.help_manager.add_module(
-                module_name,
-                [
-                    command.split()[0]
-                    for command in commands.keys()
-                ], True)
+                module_name, [command.split()[0] for command in commands.keys()], True
+            )
 
         for obj_name, obj in vars(module).items():
             handlers = getattr(obj, "handlers", [])
@@ -172,7 +177,9 @@ class Loader:
             for handler, group in handlers:
                 client.add_handler(handler, group)  # add handler
 
-    async def unload_dragon(self, name: str, client: Client, remove: bool = True) -> bool:
+    async def unload_dragon(
+        self, name: str, client: Client, remove: bool = True
+    ) -> bool:
         """Unload dragon modules"""
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
