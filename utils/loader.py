@@ -8,7 +8,7 @@ import ast
 import sys
 import os
 
-from typing import Set
+from typing import Set, Callable
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -21,27 +21,57 @@ MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 loaded_modules = []
 
+# owner filter
 def owner_filter(_, __, message: Message) -> bool:
     return bool(
         message.from_user.id in account.get("owners") 
         or message.from_user.is_self
     )
 
-
 owner = filters.create(owner_filter)
 
+# loader.command decorator
+def command(
+    client: Client,
+    name=None,
+    group: int = 0
+    ) -> Callable:
+    """original: https://github.com/pyrogram/pyrogram/blob/master/pyrogram/methods/decorators/on_message.py"""
+        
+    filters = owner & filters.command(name)
+        
+    def decorator(func: Callable) -> Callable:
+        if isinstance(client, pyrogram.Client):
+            client.add_handler(pyrogram.handlers.MessageHandler(func, filters), group)
+        elif isinstance(client, Filter) or client is None:
+            if not hasattr(func, "handlers"):
+                func.handlers = []
+
+            func.handlers.append(
+                (
+                    pyrogram.handlers.MessageHandler(func, client),
+                    group if filters is None else filters
+                )
+            )
+
+        return func
+
+    return decorator
 
 class CodeAnalysis:
     def __init__(self):
         self.functions = (
             "eval",
             "exec",
-            "pyrogram.raw.functions.account.DeleteAccount",
+            "DeleteAccount",
         )
         self.items = []
 
-    def analyze(self, module_code) -> Set[str]:
-        tree = ast.parse(module_code)
+    def analyze(self, path: str) -> Set[str]:
+        with open(path, 'r') as file:
+            code = file.read()
+        
+        tree = ast.parse(code)
 
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
