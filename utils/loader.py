@@ -43,7 +43,7 @@ def command(
         
         if isinstance(client, pyrogram.Client):
             client.add_handler(pyrogram.handlers.MessageHandler(func, command_filters), group)
-        elif isinstance(client, Filter) or client is None:
+        elif isinstance(client, filters.Filter) or client is None:
             if not hasattr(func, "handlers"):
                 func.handlers = []
 
