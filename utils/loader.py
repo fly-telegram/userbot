@@ -22,41 +22,14 @@ MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
 loaded_modules = []
 
-# owner filter
-def owner_filter(_, __, message: Message) -> bool:
-    return bool(
-        message.from_user.id in account.get("owners") 
-        or message.from_user.is_self
-    )
+class Filters:
+    def owner_filter(_, __, message: Message) -> bool:
+        return bool(
+            message.from_user.id in account.get("owners") 
+            or message.from_user.is_self
+        )
 
-owner = filters.create(owner_filter)
-
-# loader.command decorator
-def command(
-    client: Client,
-    name=None,
-    group: int = 0
-    ) -> Callable:
-    """original: https://github.com/pyrogram/pyrogram/blob/master/pyrogram/methods/decorators/on_message.py"""
-    def decorator(func: Callable) -> Callable:
-        command_filters = owner & filters.command(name)
-        
-        if isinstance(client, pyrogram.Client):
-            client.add_handler(pyrogram.handlers.MessageHandler(func, command_filters), group)
-        elif isinstance(client, filters.Filter) or client is None:
-            if not hasattr(func, "handlers"):
-                func.handlers = []
-
-            func.handlers.append(
-                (
-                    pyrogram.handlers.MessageHandler(func, client),
-                    group if client is None else filters
-                )
-            )
-
-        return func
-
-    return decorator
+owner = filters.create(Filters.owner_filter)
 
 class CodeAnalysis:
     def __init__(self):
