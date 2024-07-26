@@ -1,7 +1,7 @@
 # Fly-telegram UserBot
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
-from database.types import db, account 
+from database.types import db, account
 from utils.misc import Builder
 
 from pyrogram import Client
@@ -9,8 +9,6 @@ from pyrogram.types import Message
 from pyrogram.errors import exceptions
 
 import asyncio
-import logging
-import sys
 
 prefixes = account.get("prefixes")
 
@@ -20,8 +18,7 @@ DONE_EMOJI = "✅"
 SECRET_TEXT = "🔐 secret"
 
 
-def localenv(message: Message,
-             client: Client):
+def localenv(message: Message, client: Client):
     return {
         "message": message,
         "msg": message,
@@ -31,59 +28,98 @@ def localenv(message: Message,
         "c": client,
         "builder": Builder,
         "database": db,
-        "db": db
+        "db": db,
     }
 
 
-class Stream:
-    def __init__(self, stream: asyncio.StreamReader, message: Message, text: str, sleep: int):
+class BufferedStream:
+    def __init__(self, stream: asyncio.StreamReader, buffer_size: int):
         self.stream = stream
+        self.buffer = bytearray()
+        self.buffer_size = buffer_size
+
+    async def read(self) -> bytes:
+        chunk = await self.stream.read(self.buffer_size)
+        if not chunk:
+            return None
+
+        self.buffer.extend(chunk)
+        data = bytes(self.buffer)
+
+        self.buffer.clear()
+        return data
+
+
+class Stream:
+    def __init__(
+        self,
+        stream: asyncio.StreamReader,
+        message: Message,
+        text: str,
+        sleep: int,
+        buffer_size: int = 8192,
+    ):
+        self.stream = BufferedStream(stream, buffer_size)
         self.message = message
         self.sleep = sleep
         self.text = text
+        self.last_chunk = b""
 
     async def process(self):
         while True:
-            line = await self.stream.readline()
-            if line:
-                self.text += f"<code>{line.decode().strip()}</code>\n"
-                try:
-                    await self.message.edit(self.text)
-                except (exceptions.bad_request_400.MessageNotModified, exceptions.flood_420.FloodWait):
-                    pass
-                await asyncio.sleep(self.sleep)
+            chunk = await self.stream.read()
+            if chunk:
+                if chunk != self.last_chunk:
+                    self.last_chunk = chunk
+                    self.text += f"<code>{chunk.decode().strip()}</code>\n"
+                    try:
+                        await self.message.edit(self.text)
+                    except (
+                        exceptions.bad_request_400.MessageNotModified,
+                        exceptions.flood_420.FloodWait,
+                    ):
+                        pass
+                    await asyncio.sleep(self.sleep)
             else:
                 break
 
 
 class AsyncTerminal:
-    def __init__(self, message: Message, command: str, text: str, sleep: int):
+    def __init__(
+        self,
+        message: Message,
+        command: str,
+        text: str,
+        sleep: int,
+        buffer_size: int = 4096,
+    ):
         self.command = command
         self.message = message
         self.text = text
         self.sleep = sleep
+        self.buffer_size = buffer_size
         self.command_processes = {}
 
     async def run(self) -> int:
-        process = await asyncio.create_subprocess_shell(self.command,
-                                                        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-
-        self.command_processes[str(self.message.chat.id)] = {
-            str(self.message.id): process}
-
-        stdout_processor = Stream(
-            process.stdout, self.message, self.text, self.sleep)
-        stderr_processor = Stream(
-            process.stderr, self.message, self.text, self.sleep)
-
-        await asyncio.gather(
-            stdout_processor.process(),
-            stderr_processor.process()
+        process = await asyncio.create_subprocess_shell(
+            self.command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
 
+        self.command_processes[str(self.message.chat.id)] = {
+            str(self.message.id): process
+        }
+
+        stdout_processor = Stream(
+            process.stdout, self.message, self.text, self.sleep, self.buffer_size
+        )
+        stderr_processor = Stream(
+            process.stderr, self.message, self.text, self.sleep, self.buffer_size
+        )
+
+        await asyncio.gather(stdout_processor.process(), stderr_processor.process())
+
         code = await process.wait()
-        del self.command_processes[str(
-            self.message.chat.id)][str(self.message.id)]
+        del self.command_processes[str(self.message.chat.id)][str(self.message.id)]
         return code
 
     def get_processes(self):
