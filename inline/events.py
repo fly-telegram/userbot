@@ -18,7 +18,8 @@ async def main_handler(message: types.Message) -> types.Message:
         )
     )
     builder.row(
-        types.InlineKeyboardButton(text="🕊 Updates", url="https://t.me/flyTG_UB")
+        types.InlineKeyboardButton(
+            text="🕊 Updates", url="https://t.me/flyTG_UB")
     )
 
     await message.reply(

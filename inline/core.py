@@ -74,7 +74,8 @@ class Inline:
 
         try:
             self.bot = Bot(
-                token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+                token=token, default=DefaultBotProperties(
+                    parse_mode=ParseMode.HTML)
             )
         except TelegramUnauthorizedError:
             db.set("inline_token", "")

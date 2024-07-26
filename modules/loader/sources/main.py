@@ -29,9 +29,9 @@ async def load_cmd(Client, message: Message):
     reply = message.reply_to_message
     file = message if message.document else reply if reply and reply.document else None
     check_code = (
-        False 
-        if "-nc" in message.command 
-        or "--no-check" in message.command else 
+        False
+        if "-nc" in message.command
+        or "--no-check" in message.command else
         True
     )
 

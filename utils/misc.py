@@ -3,7 +3,7 @@
 
 from typing import List, Optional
 
-from database.types import account 
+from database.types import account
 from utils.git import version
 
 import datetime
@@ -15,6 +15,7 @@ prefix = account.get("prefixes")
 modules_help = {}
 
 modules = {}
+
 
 class Builder:
     def add_module(
@@ -52,6 +53,7 @@ def uptime() -> str:
             )
         )
     )
+
 
 def ram() -> float:
     try:

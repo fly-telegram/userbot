@@ -52,7 +52,8 @@ async def main(client: Client):
                 logger.info(f"[LOADER] Dragon module '{name}' loaded")
                 success_modules += 1
             except Exception as error:
-                logger.error(f"[LOADER] Failed load '{name}' dragon module: {error}")
+                logger.error(
+                    f"[LOADER] Failed load '{name}' dragon module: {error}")
                 failed_modules += 1
 
     for module in os.listdir("./modules"):
@@ -62,7 +63,8 @@ async def main(client: Client):
                 logger.info(f"[LOADER] Module '{module}' loaded")
                 success_modules += 1
             except Exception as error:
-                logger.error(f"[LOADER] Failed load '{module}' module: {error}")
+                logger.error(
+                    f"[LOADER] Failed load '{module}' module: {error}")
                 failed_modules += 1
 
     logger.info(

@@ -24,7 +24,8 @@ loaded_modules = []
 class Filters:
     def owner_filter(_, __, message: Message) -> bool:
         return bool(
-            message.from_user.id in account.get("owners") or message.from_user.is_self
+            message.from_user.id in account.get(
+                "owners") or message.from_user.is_self
         )
 
 
@@ -83,7 +84,8 @@ class Loader:
         if name in self.core_modules:
             raise PermissionError("Cannot unload system modules!")
 
-        module = importlib.import_module(f"modules.{name}.sources.main")  # load module
+        module = importlib.import_module(
+            f"modules.{name}.sources.main")  # load module
 
         for obj_name, obj in vars(module).items():
             handlers = getattr(obj, "handlers", [])
@@ -107,7 +109,7 @@ class Loader:
         return True
 
     async def load(self, name: str, client: Client,
-    check_code: bool = True) -> bool:
+                   check_code: bool = True) -> bool:
         """Load a module"""
         path = os.path.join(MODULES_DIR, name)
 
@@ -129,7 +131,8 @@ class Loader:
                             ",".join(founded_items),
                         )
 
-        module = importlib.import_module(f"modules.{name}.sources.main")  # load module
+        module = importlib.import_module(
+            f"modules.{name}.sources.main")  # load module
         loaded_modules.append(module)
 
         # add to help
@@ -151,12 +154,12 @@ class Loader:
         return True
 
     async def load_dragon(self, name: str, client: Client,
-    check_code: bool = True) -> bool:
+                          check_code: bool = True) -> bool:
         """Load dragon module"""
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
-            
+
         if check_code:
             founded_items = CodeAnalysis().analyze(path)
             if founded_items:
@@ -171,7 +174,8 @@ class Loader:
         # convert "modules_help" to "modules"
         for module_name, commands in modules_help.items():
             self.help_manager.add_module(
-                module_name, [command.split()[0] for command in commands.keys()], True
+                module_name, [command.split()[0]
+                              for command in commands.keys()], True
             )
 
         for obj_name, obj in vars(module).items():
