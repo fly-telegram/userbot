@@ -2,8 +2,9 @@
     <img src="https://raw.githubusercontent.com/fly-telegram/userbot/master/assets/logo.gif">
     <h1>🕊️ fly telegram</h1>
     <p>It is a handy and easy to use userbot.</p>
-    <img alt="code size" src="https://img.shields.io/github/languages/code-size/fly-telegram/userbot">
-    <img alt="repo stars" src="https://img.shields.io/github/stars/fly-telegram/userbot?style=flat">
+    <img alt="code size" src="https://img.shields.io/github/languages/code-size/fly-telegram/userbot?style=for-the-badge">
+    <img alt="repo stars" src="https://img.shields.io/github/stars/fly-telegram/userbot?style=for-the-badge">
+    <img alt="repo stars" src="https://img.shields.io/github/commit-activity/w/fly-telegram/userbot?style=for-the-badge">
 </div>
 
 <h2>Installation</h2>
