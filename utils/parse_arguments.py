@@ -5,6 +5,17 @@ import argparse
 
 
 def parse() -> dict:
+    """
+    Parses command-line arguments using argparse.
+
+    Returns:
+        dict: A dictionary containing the parsed arguments.
+
+    The function defines two command-line arguments:
+
+    * `--session-string`: Allows starting a userbot via a session string.
+    * `--no-logo`: Disables the logo in the console.
+    """
     parser = argparse.ArgumentParser()
 
     parser.add_argument(

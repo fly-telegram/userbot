@@ -15,6 +15,12 @@ from inline.types import inline
 
 
 def fix_task_error(task: asyncio.Task):
+    """
+    Fixes task errors by canceling the task and ignoring any exceptions.
+
+    Args:
+        task (asyncio.Task): The task to fix.
+    """
     def no_error(task: asyncio.Task):
         try:
             task.cancel()
@@ -25,7 +31,20 @@ def fix_task_error(task: asyncio.Task):
 
 
 class UserbotHandler(logging.StreamHandler):
+    """
+    A custom logging handler for the userbot.
+
+    Args:
+        client (Client): The Telegram client instance.
+    """
+
     def __init__(self, client: Client):
+        """
+        Initializes the handler.
+
+        Args:
+            client (Client): The Telegram client instance.
+        """
         self.buffer = []
 
         self.filters = []
@@ -35,11 +54,23 @@ class UserbotHandler(logging.StreamHandler):
         super().__init__()
 
     def emit(self, record: logging.LogRecord):
+        """
+        Emits a log record.
+
+        Args:
+            record (logging.LogRecord): The log record.
+        """
         super().emit(record)
         with contextlib.suppress(Exception):
             task = asyncio.ensure_future(self.inlinelog(record))
 
     async def inlinelog(self, record: logging.LogRecord):
+        """
+        Logs an error message to the Telegram bot.
+
+        Args:
+            record (logging.LogRecord): The log record.
+        """
         if record.levelname == "ERROR" and inline.bot:
             builder = InlineKeyboardBuilder()
 
@@ -58,9 +89,18 @@ class UserbotHandler(logging.StreamHandler):
 
             await inline.bot.send_message(me.id, text,
                                           reply_markup=builder.as_markup())
-
-
+                                          
+                                          
 def load(client: Client):
+    """
+    Loads the logging configuration for the userbot.
+
+    Args:
+        client (Client): The Telegram client instance.
+
+    Returns:
+        logging.Logger: The logger instance.
+    """
     format = logging.Formatter(
         "%(asctime)s [%(levelname)s] %(funcName)s: %(lineno)d - %(message)s",
         "%m-%d %H:%M:%S")

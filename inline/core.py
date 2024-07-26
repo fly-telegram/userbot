@@ -19,11 +19,24 @@ import asyncio
 
 class Inline:
     def __init__(self):
+        """
+        Initializes the inline bot manager.
+        """
         self.bot: Bot = None
         self.dispatcher: Dispatcher = None
         self.errors_text = ["Sorry.", "That I cannot do.", "too many attempts"]
 
     async def create(self, client: Client, botfather: str = "@BotFather") -> str:
+        """
+        Creates a new inline bot.
+
+        Args:
+            client (Client): The Telegram client instance.
+            botfather (str, optional): The BotFather username. Defaults to "@BotFather".
+
+        Returns:
+            str: The bot token.
+        """
         id = "".join(
             random.choice(string.ascii_letters + string.digits) for _ in range(5)
         )
@@ -65,6 +78,13 @@ class Inline:
         return token
 
     async def load(self, client: Client):
+        """
+        Loads the inline bot.
+
+        Args:
+            client (pyrogram.Client): The Telegram client instance.
+        """
+        
         token = db.get("inline_token")
 
         if not token:

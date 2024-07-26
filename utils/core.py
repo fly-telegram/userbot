@@ -27,6 +27,13 @@ loader = Loader()
 
 
 async def main(client: Client):
+    """
+    Main loop
+    
+    Args:
+        client (pyrogram.Client): pyrogram client
+    """
+    
     if not parser.no_logo:
         print(logo)
 

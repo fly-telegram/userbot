@@ -23,17 +23,31 @@ loaded_modules = []
 
 class Filters:
     def owner_filter(_, __, message: Message) -> bool:
-        return bool(
-            message.from_user.id in account.get(
-                "owners") or message.from_user.is_self
-        )
+        """
+        Check if the message sender is an owner or the bot itself.
 
+        Args:
+            _ (any): Unused argument.
+            __ (any): Unused argument.
+            message (Message): The message to check.
+
+        Returns:
+            bool: True if the message sender is an owner or the bot itself, False otherwise.
+        """
+        return bool(
+            message.from_user.id in account.get("owners") or message.from_user.is_self
+        )
 
 owner = filters.create(Filters.owner_filter)
 
 
 class CodeAnalysis:
     def __init__(self):
+        """
+        Initialize the CodeAnalysis class.
+
+        The class is used to analyze Python code and detect the use of certain functions and modules.
+        """
         self.functions = (
             "eval",
             "exec",
@@ -41,7 +55,16 @@ class CodeAnalysis:
         )
         self.items = []
 
-    def analyze(self, path: str) -> Set[str]:
+    def analyze(self, path: str) -> set[str]:
+        """
+        Analyze the Python code in the given file.
+
+        Args:
+            path (str): The path to the Python file to analyze.
+
+        Returns:
+            set[str]: A set of detected function and module names.
+        """
         with open(path, "r") as file:
             code = file.read()
 
@@ -68,6 +91,11 @@ class CodeAnalysis:
 
 class Loader:
     def __init__(self):
+        """
+        Initializes the Loader instance.
+
+        Creates a new instance of the `Builder` class and sets the core modules.
+        """
         self.help_manager = Builder()
 
         self.core_modules = (
@@ -78,7 +106,21 @@ class Loader:
         )
 
     async def unload(self, name: str, client: Client, remove: bool = True) -> bool:
-        """Unload a module"""
+        """
+        Unloads a module.
+
+        Args:
+            name (str): The name of the module to unload.
+            client (Client): The client instance.
+            remove (bool, optional): Whether to remove the module's files. Defaults to True.
+
+        Returns:
+            bool: True if the module was unloaded successfully, False otherwise.
+
+        Raises:
+            NameError: If the module is not found.
+            PermissionError: If the module is a system module.
+        """
         if name not in os.listdir(MODULES_DIR):
             raise NameError(f"Module '{name}' is not found!")
         if name in self.core_modules:
@@ -110,7 +152,22 @@ class Loader:
 
     async def load(self, name: str, client: Client,
                    check_code: bool = True) -> bool:
-        """Load a module"""
+        """
+        Loads a module.
+
+        Args:
+            name (str): The name of the module to load.
+            client (Client): The client instance.
+            check_code (bool, optional): Whether to check the module's code for malicious content. Defaults to True.
+
+        Returns:
+            bool: True if the module was loaded successfully, False otherwise.
+
+        Raises:
+            NameError: If the module is not found.
+            ValueError: If the module is out of date or does not have a module information file.
+            Exception: If malicious code is found in the module.
+        """
         path = os.path.join(MODULES_DIR, name)
 
         if name not in os.listdir(MODULES_DIR):
@@ -155,7 +212,21 @@ class Loader:
 
     async def load_dragon(self, name: str, client: Client,
                           check_code: bool = True) -> bool:
-        """Load dragon module"""
+        """
+        Loads a dragon module.
+
+        Args:
+            name (str): The name of the dragon module to load.
+            client (Client): The client instance.
+            check_code (bool, optional): Whether to check the module's code for malicious content. Defaults to True.
+
+        Returns:
+            bool: True if the module was loaded successfully, False otherwise.
+
+        Raises:
+            NameError: If the dragon module is not found.
+            Exception: If malicious code is found in the module.
+        """
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
@@ -191,7 +262,21 @@ class Loader:
     async def unload_dragon(
         self, name: str, client: Client, remove: bool = True
     ) -> bool:
-        """Unload dragon modules"""
+        """
+        Unloads a dragon module.
+
+        Args:
+            name (str): The name of the dragon module to unload.
+            client (Client): The client instance.
+            remove (bool, optional): Whether to remove the module's files. Defaults to True.
+
+        Returns:
+            bool: True if the module was unloaded successfully, False otherwise.
+
+        Raises:
+            NameError: If the dragon module is not found.
+        """
+        
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
