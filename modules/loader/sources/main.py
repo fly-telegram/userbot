@@ -28,6 +28,12 @@ async def load_cmd(Client, message: Message):
     dragon = False
     reply = message.reply_to_message
     file = message if message.document else reply if reply and reply.document else None
+    check_code = (
+        False 
+        if "-nc" in message.command 
+        or "--no-check" in message.command else 
+        True
+    )
 
     if not file:
         await message.edit("❌ <b>A reply or a document is needed!</b>")
@@ -100,9 +106,9 @@ async def load_cmd(Client, message: Message):
 
     try:
         if not dragon:
-            await loader.load(module_name, Client)
+            await loader.load(module_name, Client, check_code)
         else:
-            await loader.load_dragon(module_name, Client)
+            await loader.load_dragon(module_name, Client, check_code)
     except Exception as error:
         await message.edit(
             f"❌ <b>{module_name} installing error</b>\n<code>{error}</code>"

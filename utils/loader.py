@@ -106,7 +106,8 @@ class Loader:
 
         return True
 
-    async def load(self, name: str, client: Client) -> bool:
+    async def load(self, name: str, client: Client,
+    check_code: bool = True) -> bool:
         """Load a module"""
         path = os.path.join(MODULES_DIR, name)
 
@@ -117,15 +118,16 @@ class Loader:
                 f"Module '{name}' is out of date or does not have a module information file."
             )
 
-        for file in os.listdir(path):
-            if file.endswith(".py"):
-                path = os.path.join(MODULES_DIR, name, file)
-                founded_items = CodeAnalysis().analyze(path)
-                if founded_items:
-                    raise Exception(
-                        f"Malicious code was found in '{name}' module: ",
-                        ",".join(founded_items),
-                    )
+        if check_code:
+            for file in os.listdir(path):
+                if file.endswith(".py"):
+                    path = os.path.join(MODULES_DIR, name, file)
+                    founded_items = CodeAnalysis().analyze(path)
+                    if founded_items:
+                        raise Exception(
+                            f"Malicious code was found in '{name}' module: ",
+                            ",".join(founded_items),
+                        )
 
         module = importlib.import_module(f"modules.{name}.sources.main")  # load module
         loaded_modules.append(module)
@@ -148,17 +150,20 @@ class Loader:
 
         return True
 
-    async def load_dragon(self, name: str, client: Client):
+    async def load_dragon(self, name: str, client: Client,
+    check_code: bool = True) -> bool:
         """Load dragon module"""
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")
-        founded_items = CodeAnalysis().analyze(path)
-        if founded_items:
-            raise Exception(
-                f"Malicious code was found in '{name}' dragon module: ",
-                ",".join(founded_items),
-            )
+            
+        if check_code:
+            founded_items = CodeAnalysis().analyze(path)
+            if founded_items:
+                raise Exception(
+                    f"Malicious code was found in '{name}' dragon module: ",
+                    ",".join(founded_items),
+                )
 
         module = importlib.import_module(f"dragon_modules.{name}")
         loaded_modules.append(module)
@@ -176,6 +181,8 @@ class Loader:
 
             for handler, group in handlers:
                 client.add_handler(handler, group)  # add handler
+
+        return True
 
     async def unload_dragon(
         self, name: str, client: Client, remove: bool = True
