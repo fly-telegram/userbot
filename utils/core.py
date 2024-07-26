@@ -48,7 +48,7 @@ async def main(client: Client):
         if os.path.isfile(os.path.join("./dragon_modules", module)):
             try:
                 name = module.split(".py")[0]
-                await loader.load_dragon(name, client)
+                await loader.load_dragon(name, client, False)
                 logger.info(f"[LOADER] Dragon module '{name}' loaded")
                 success_modules += 1
             except Exception as error:
@@ -59,7 +59,7 @@ async def main(client: Client):
     for module in os.listdir("./modules"):
         if os.path.isdir(os.path.join("./modules", module)):
             try:
-                await loader.load(module, client)
+                await loader.load(module, client, False)
                 logger.info(f"[LOADER] Module '{module}' loaded")
                 success_modules += 1
             except Exception as error:
