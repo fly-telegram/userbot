@@ -89,9 +89,9 @@ async def info_cmd(client: Client, message: Message):
     )
 
     await message.delete()
-    await client.send_photo(
+    await client.send_animation(
         chat_id=message.chat.id,
-        photo="./assets/logo.gif",
+        animation="./assets/logo.gif",
         caption=text.format(
             owner=owner,
             version=userbot_version,
