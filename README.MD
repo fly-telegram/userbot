@@ -1,20 +1,23 @@
-<img src="https://raw.githubusercontent.com/fly-telegram/userbot/master/assets/logo.gif">
-# 🕊 fly-telegram
-It is a handy and easy to use userbot.
-<br></br>
+<div align="center">
+    <img src="https://raw.githubusercontent.com/fly-telegram/userbot/master/assets/logo.gif">
+    <h1>🕊️ fly telegram</h1>
+    <p>It is a handy and easy to use userbot.</p>
+</div>
 
-## Installation
-- 🐧 Linux
-    ```
-    git clone https://github.com/fly-telegram/userbot.git
-    cd userbot
-    python3 -m pip install -r requirements.txt
-    ```
-## Startup
-- 🐧 Linux
-    ```
-    python3 main.py
-    ```
-## Channels
-> [Updates](https://t.me/flyTG_ub)
-> [Support](https://t.me/flyTG_support)
+<h2>Installation</h2>
+<ul>
+    <li><code>git clone https://github.com/fly-telegram/userbot.git</code> : Cloning git repository</li>
+    <li><code>cd userbot</code> : Jump to directory</li>
+    <li><code>python3 -m pip install -r requirements.txt</code> : Install requirements</li>
+</ul>
+
+<h2>Startup</h2>
+<ul>
+    <li><code>python3 main.py</code> : Run main.py file</li>
+</ul>
+
+<h2>Channels</h2>
+<ul>
+    <li><a href="https://t.me/flyTG_UB">Updates</a></li>
+    <li><a href="https://t.me/flyTG_support">Support chat</a></li>
+</ul>
