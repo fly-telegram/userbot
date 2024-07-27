@@ -74,7 +74,7 @@ class UserbotHandler(logging.StreamHandler):
             builder = InlineKeyboardBuilder()
 
             builder.row(types.InlineKeyboardButton(
-                text=" Issues", url="https://github.com/fly-telegram/userbot/issues"))
+                text="⚠️ Issues", url="https://github.com/fly-telegram/userbot/issues"))
 
             try:
                 me = await self.client.get_me()
