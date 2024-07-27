@@ -18,7 +18,17 @@ DONE_EMOJI = "✅"
 SECRET_TEXT = "🔐 secret"
 
 
-def localenv(message: Message, client: Client):
+def localenv(message: Message, client: Client) -> dict:
+    """
+    Returns a dictionary of local environment variables.
+    
+    Args:
+        message (Message): The message instance.
+        client (Client): The client instance.
+    
+    Returns:
+        dict: A dictionary of local environment variables.
+    """
     return {
         "message": message,
         "msg": message,
@@ -34,11 +44,24 @@ def localenv(message: Message, client: Client):
 
 class BufferedStream:
     def __init__(self, stream: asyncio.StreamReader, buffer_size: int):
+        """
+        Initializes a buffered stream.
+        
+        Args:
+            stream (asyncio.StreamReader): The stream reader instance.
+            buffer_size (int): The buffer size.
+        """
         self.stream = stream
         self.buffer = bytearray()
         self.buffer_size = buffer_size
 
     async def read(self) -> bytes:
+        """
+        Reads data from the stream.
+        
+        Returns:
+            bytes: The read data.
+        """
         chunk = await self.stream.read(self.buffer_size)
         if not chunk:
             return None
@@ -59,6 +82,16 @@ class Stream:
         sleep: int,
         buffer_size: int = 8192,
     ):
+        """
+        Initializes a stream.
+        
+        Args:
+            stream (asyncio.StreamReader): The stream reader instance.
+            message (Message): The message instance.
+            text (str): The text to be processed.
+            sleep (int): The sleep time.
+            buffer_size (int, optional): The buffer size. Defaults to 8192.
+        """
         self.stream = BufferedStream(stream, buffer_size)
         self.message = message
         self.sleep = sleep
@@ -66,6 +99,9 @@ class Stream:
         self.last_chunk = b""
 
     async def process(self):
+        """
+        Processes the stream.
+        """
         while True:
             chunk = await self.stream.read()
             if chunk:
@@ -93,6 +129,16 @@ class AsyncTerminal:
         sleep: int,
         buffer_size: int = 4096,
     ):
+        """
+        Initializes an async terminal.
+        
+        Args:
+            message (Message): The message instance.
+            command (str): The command to be executed.
+            text (str): The text to be processed.
+            sleep (int): The sleep time.
+            buffer_size (int, optional): The buffer size. Defaults to 4096.
+        """
         self.command = command
         self.message = message
         self.text = text
@@ -101,6 +147,12 @@ class AsyncTerminal:
         self.command_processes = {}
 
     async def run(self) -> int:
+        """
+        Runs the async terminal.
+        
+        Returns:
+            int: The exit code.
+        """
         process = await asyncio.create_subprocess_shell(
             self.command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
@@ -122,5 +174,11 @@ class AsyncTerminal:
         del self.command_processes[str(self.message.chat.id)][str(self.message.id)]
         return code
 
-    def get_processes(self):
+    def get_processes(self) -> dict:
+        """
+        Returns the command processes.
+        
+        Returns:
+            dict: A dictionary of command processes.
+        """
         return self.command_processes
