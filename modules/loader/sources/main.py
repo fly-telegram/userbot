@@ -15,7 +15,7 @@ from database.database import Database
 from utils.git import version
 from utils.loader import owner
 from utils.misc import modules
-from .utils import prefixes, help_manager, loader
+from .utils import prefixes, loader
 
 
 @Client.on_message(

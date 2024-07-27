@@ -1,9 +1,8 @@
 # Fly-telegram UserBot
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
-import asyncio
 import logging
-from typing import List, Union
+from typing import Union
 
 from pyrogram import Client, types
 
@@ -20,7 +19,6 @@ class Conversation:
         client (Client): The Telegram client instance.
         chat (Union[str, int]): The chat ID or username.
         clear (bool): Whether to clear the conversation messages when exiting.
-        messages (List[types.Message]): A list of sent and received messages in the conversation.
     """
 
     def __init__(
@@ -32,8 +30,6 @@ class Conversation:
         self.client = client
         self.chat = chat
         self.clear = clear
-
-        self.messages: List[types.Message] = []
 
     async def __aenter__(self) -> "Conversation":
         """
@@ -74,11 +70,8 @@ class Conversation:
         Returns:
             types.Message: The sent message.
         """
-        message = await self.client.send_message(
+        return await self.client.send_message(
             self.chat, text, *args, **kwargs)
-
-        self.messages.append(message)
-        return message
 
     async def response(self, timeout: int = 30, limit: int = 1) -> types.Message:
         """
@@ -94,23 +87,15 @@ class Conversation:
         Raises:
             RuntimeError: If the timeout is reached.
         """
-        responses = self.client.get_chat_history(self.chat, limit=limit)
-        async for response in responses:
-            if response.from_user.is_self:
-                timeout -= 1
-                if timeout == 0:
-                    raise RuntimeError("Timeout error")
+        async for response in self.client.get_chat_history(self.chat, limit=limit):
+            if not response.from_user.is_self:
+                return response
 
-                await asyncio.sleep(1)
-                responses = self.client.get_chat_history(
-                    self.chat, limit=limit)
-
-        self.messages.append(response)
-        return response
+        raise RuntimeError("Timeout error")
 
     async def clear_messages(self) -> None:
         """
         Clears the conversation messages.
         """
-        for message in self.messages:
+        async for message in self.client.get_chat_history(self.chat):
             await message.delete()

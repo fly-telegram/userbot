@@ -3,13 +3,12 @@
 
 import argparse
 
-
-def parse() -> dict:
+def parse() -> argparse.Namespace:
     """
     Parses command-line arguments using argparse.
 
     Returns:
-        dict: A dictionary containing the parsed arguments.
+        argparse.Namespace: A namespace containing the parsed arguments.
 
     The function defines two command-line arguments:
 
@@ -32,5 +31,4 @@ def parse() -> dict:
         help="Disables the logo in the console.",
     )
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()

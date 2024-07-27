@@ -25,7 +25,6 @@ logo = """
 parser = parse()
 loader = Loader()
 
-
 async def main(client: Client):
     """
     Main loop
@@ -45,34 +44,31 @@ async def main(client: Client):
     update = "Update available!" if check_update() else "Up-To-Date"
     logger.info(f"Userbot is started! ({update})")
 
+    modules = (module for module in os.listdir("./dragon_modules") if os.path.isfile(os.path.join("./dragon_modules", module)))
     success_modules = 0
     failed_modules = 0
 
-    if not os.path.isdir("./dragon_modules"):
-        os.makedirs("dragon_modules")
+    for module in modules:
+        try:
+            name = module.split(".py")[0]
+            await loader.load_dragon(name, client, False)
+            logger.info(f"[LOADER] Dragon module '{name}' loaded")
+            success_modules += 1
+        except Exception as error:
+            logger.error(
+                f"[LOADER] Failed load '{name}' dragon module: {error}")
+            failed_modules += 1
 
-    for module in os.listdir("./dragon_modules"):
-        if os.path.isfile(os.path.join("./dragon_modules", module)):
-            try:
-                name = module.split(".py")[0]
-                await loader.load_dragon(name, client, False)
-                logger.info(f"[LOADER] Dragon module '{name}' loaded")
-                success_modules += 1
-            except Exception as error:
-                logger.error(
-                    f"[LOADER] Failed load '{name}' dragon module: {error}")
-                failed_modules += 1
-
-    for module in os.listdir("./modules"):
-        if os.path.isdir(os.path.join("./modules", module)):
-            try:
-                await loader.load(module, client, False)
-                logger.info(f"[LOADER] Module '{module}' loaded")
-                success_modules += 1
-            except Exception as error:
-                logger.error(
-                    f"[LOADER] Failed load '{module}' module: {error}")
-                failed_modules += 1
+    modules = (module for module in os.listdir("./modules") if os.path.isdir(os.path.join("./modules", module)))
+    for module in modules:
+        try:
+            await loader.load(module, client, False)
+            logger.info(f"[LOADER] Module '{module}' loaded")
+            success_modules += 1
+        except Exception as error:
+            logger.error(
+                f"[LOADER] Failed load '{module}' module: {error}")
+            failed_modules += 1
 
     logger.info(
         f"[LOADER] Successfully imported modules: {success_modules}, with errors: {failed_modules}."

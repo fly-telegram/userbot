@@ -18,7 +18,7 @@ from database.types import account
 
 MODULES_DIR = "modules"
 DRAGON_MODULES_DIR = "dragon_modules"
-loaded_modules = []
+loaded_modules: Set[object] = set()
 
 
 class Filters:
@@ -53,9 +53,10 @@ class CodeAnalysis:
             "exec",
             "DeleteAccount",
         )
-        self.items = []
+        self.allowed: Set[str] = set()  # Initialize allowed set
+        self.items: Set[str] = set()  # Initialize items set
 
-    def analyze(self, path: str) -> set[str]:
+    def analyze(self, path: str) -> Set[str]:
         """
         Analyze the Python code in the given file.
 
@@ -63,7 +64,7 @@ class CodeAnalysis:
             path (str): The path to the Python file to analyze.
 
         Returns:
-            set[str]: A set of detected function and module names.
+            Set[str]: A set of detected function and module names.
         """
         with open(path, "r") as file:
             code = file.read()
@@ -81,10 +82,10 @@ class CodeAnalysis:
                     ):
                         module_name = node.func.value.args[0].s
                         if module_name in self.allowed:
-                            self.items.append(module_name)
+                            self.items.add(module_name)
 
                 elif isinstance(node.func, ast.Name) and node.func.id in self.functions:
-                    self.items.append(node.func.id)
+                    self.items.add(node.func.id)
 
         return self.items
 
@@ -190,7 +191,7 @@ class Loader:
 
         module = importlib.import_module(
             f"modules.{name}.sources.main")  # load module
-        loaded_modules.append(module)
+        loaded_modules.add(module)
 
         # add to help
         commands = [
@@ -240,7 +241,7 @@ class Loader:
                 )
 
         module = importlib.import_module(f"dragon_modules.{name}")
-        loaded_modules.append(module)
+        loaded_modules.add(module)
 
         # convert "modules_help" to "modules"
         for module_name, commands in modules_help.items():
@@ -276,7 +277,6 @@ class Loader:
         Raises:
             NameError: If the dragon module is not found.
         """
-        
         path = os.path.join(DRAGON_MODULES_DIR, f"{name}.py")
         if not os.path.exists(path):
             raise NameError(f"Dragon module '{name}' is not found!")

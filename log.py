@@ -5,6 +5,7 @@ import contextlib
 import threading
 import logging
 import asyncio
+import functools
 
 from pyrogram import Client
 from pyrogram.errors import exceptions
@@ -12,7 +13,6 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from inline.types import inline
-
 
 def fix_task_error(task: asyncio.Task):
     """
@@ -28,7 +28,6 @@ def fix_task_error(task: asyncio.Task):
             pass
 
     task.add_done_callback(functools.partial(no_error))
-
 
 class UserbotHandler(logging.StreamHandler):
     """
@@ -75,7 +74,7 @@ class UserbotHandler(logging.StreamHandler):
             builder = InlineKeyboardBuilder()
 
             builder.row(types.InlineKeyboardButton(
-                text="⚠️ Issues", url="https://github.com/fly-telegram/userbot/issues"))
+                text=" Issues", url="https://github.com/fly-telegram/userbot/issues"))
 
             try:
                 me = await self.client.get_me()
@@ -89,9 +88,8 @@ class UserbotHandler(logging.StreamHandler):
 
             await inline.bot.send_message(me.id, text,
                                           reply_markup=builder.as_markup())
-                                          
-                                          
-def load(client: Client):
+
+def load(client: Client) -> logging.Logger:
     """
     Loads the logging configuration for the userbot.
 
@@ -101,6 +99,7 @@ def load(client: Client):
     Returns:
         logging.Logger: The logger instance.
     """
+
     format = logging.Formatter(
         "%(asctime)s [%(levelname)s] %(funcName)s: %(lineno)d - %(message)s",
         "%m-%d %H:%M:%S")
