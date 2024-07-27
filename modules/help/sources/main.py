@@ -14,7 +14,7 @@ from .utils import (
 
 @Client.on_message(filters.command(["help"], prefixes) & loader.owner)
 async def help_cmd(Client, message: Message):
-    items = sorted([item for item in help_manager.get_items() if not db.get(item[1], "__hidden__"),
+    items = sorted([item for item in help_manager.get_items() if not db.get(item[1], "__hidden__")],
                key=lambda x: (len(x[1]['commands']), x[0]))
 
     all_commands = "\n".join(
@@ -62,7 +62,7 @@ async def unhide_cmd(Client, message: Message):
     
 @Client.on_message(filters.command(["hidehelp"], prefixes) & loader.owner)
 async def hidehelp_cmd(Client, message: Message):
-    items = sorted([item for item in help_manager.get_items() if not db.get(item[1], "__hidden__"),
+    items = sorted([item for item in help_manager.get_items() if not db.get(item[1], "__hidden__")],
                key=lambda x: (len(x[1]['commands']), x[0]))
 
     all_commands = "\n".join(
