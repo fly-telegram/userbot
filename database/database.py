@@ -2,34 +2,41 @@
 # this code is licensed by cc-by-nc (https://creativecommons.org/share-your-work/cclicenses)
 
 import ujson
-
+from pathlib import Path
+from typing import Any, Dict
 
 class Database(dict):
-    """
-    A custom dictionary class for managing a JSON file.
-
-    Attributes:
-        data (dict): The dictionary data.
-        location (str): The location of the JSON file.
-    """
-
-    def __init__(self, location: str):
+    def __init__(self, location: str = "db.json"):
         """
         Initializes the database.
 
         Args:
             location (str): The location of the JSON file.
         """
-        self.data = ujson.load(open(location, "rb"))
-        self.location = location
+        self.location = Path(location)
+        self.update(**self.load(self.location))
 
-    def save(self):
+    def load(self, location: Path) -> Dict[str, Any]:
+        """
+        Loads the database from the JSON file.
+
+        Args:
+            location (Path): The location of the JSON file.
+
+        Returns:
+            Dict[str, Any]: The loaded database.
+        """
+        if not location.exists():
+            return {}
+        with location.open("rb") as file:
+            return ujson.load(file)
+
+    def save(self) -> None:
         """
         Saves the database to the JSON file.
         """
-        with open(self.location, "w") as file:
-            ujson.dump(self.data, file, indent=2)
-        self.data = ujson.load(open(self.location, "rb"))
+        with self.location.open("w") as file:
+            ujson.dump(self, file, indent=2)
 
     def get(self, *keys):
         """
@@ -41,9 +48,7 @@ class Database(dict):
         Returns:
             Any: The value.
         """
-        self.data = ujson.load(open(self.location, "rb"))
-        data = self.data
-
+        data = self
         for key in keys:
             if key in data:
                 data = data[key]
@@ -51,13 +56,13 @@ class Database(dict):
                 return None
         return data
 
-    def set(self, key: str, value: str):
+    def set(self, key: str, value: Any):
         """
         Sets a value in the database.
 
         Args:
             key (str): The key to set the value.
-            value (str): The value to set.
+            value (Any): The value to set.
         """
-        self.data = ujson.load(open(self.location, "rb"))
-        self.data[key] = value
+        self[key] = value
+        self.save()
