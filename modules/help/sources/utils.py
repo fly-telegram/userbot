@@ -9,3 +9,4 @@ help_manager = Builder()
 
 DRAGON_EMOJI = "🐉"
 EMOJI = "📦"
+HIDDEN_EMOJI = "🕶️"

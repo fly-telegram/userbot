@@ -23,6 +23,7 @@ class Builder:
         name: str,
         commands: List[str],
         is_dragon: Optional[bool] = False,
+        hidden: Optional[bool] = False
     ) -> None:
         """
         Add module to help
@@ -31,11 +32,13 @@ class Builder:
             name (str): Module name.
             commands (list): List of module commands.
             is_dragon (bool): Dragon module or not. (optional)
+            hidden (bool): is the module hidden? (optional)
         """
 
         modules[name] = {
             "commands": commands,
-            "is.dragon": is_dragon
+            "is.dragon": is_dragon,
+            "hidden": hidden
         }
 
     def get_modules(self) -> List[str]:
