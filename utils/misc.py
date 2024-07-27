@@ -26,13 +26,13 @@ class Builder:
     ) -> None:
         """
         Add module to help
-        
+
         Args:
             name (str): Module name.
             commands (list): List of module commands.
             is_dragon (bool): Dragon module or not. (optional)
         """
-        
+
         modules[name] = {
             "commands": commands,
             "is.dragon": is_dragon
@@ -41,7 +41,7 @@ class Builder:
     def get_modules(self) -> List[str]:
         """
         Get all modules keys.
-        
+
         Returns:
             list: Modules keys 
         """
@@ -50,7 +50,7 @@ class Builder:
     def get_items(self):
         """
         Get all modules items.
-        
+
         Returns:
             items: Modules items.
         """
@@ -59,10 +59,10 @@ class Builder:
     def remove_module(self, name: str) -> dict:
         """
         Remove module from help.
-        
+
         Args:
             name (str): Module name.
-        
+
         Returns:
             list: All modules.
         """
@@ -82,7 +82,7 @@ def uptime() -> str:
     Returns:
         str: The uptime as a string in the format days, hours, minutes, and seconds.
     """
-    
+
     return str(
         datetime.timedelta(
             seconds=round(

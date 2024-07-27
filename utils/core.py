@@ -25,14 +25,15 @@ logo = """
 parser = parse()
 loader = Loader()
 
+
 async def main(client: Client):
     """
     Main loop
-    
+
     Args:
         client (pyrogram.Client): pyrogram client
     """
-    
+
     if not parser.no_logo:
         print(logo)
 
@@ -44,7 +45,8 @@ async def main(client: Client):
     update = "Update available!" if check_update() else "Up-To-Date"
     logger.info(f"Userbot is started! ({update})")
 
-    modules = (module for module in os.listdir("./dragon_modules") if os.path.isfile(os.path.join("./dragon_modules", module)))
+    modules = (module for module in os.listdir("./dragon_modules")
+               if os.path.isfile(os.path.join("./dragon_modules", module)))
     success_modules = 0
     failed_modules = 0
 
@@ -59,7 +61,8 @@ async def main(client: Client):
                 f"[LOADER] Failed load '{name}' dragon module: {error}")
             failed_modules += 1
 
-    modules = (module for module in os.listdir("./modules") if os.path.isdir(os.path.join("./modules", module)))
+    modules = (module for module in os.listdir("./modules")
+               if os.path.isdir(os.path.join("./modules", module)))
     for module in modules:
         try:
             await loader.load(module, client, False)

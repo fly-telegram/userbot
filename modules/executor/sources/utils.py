@@ -21,11 +21,11 @@ SECRET_TEXT = "🔐 secret"
 def localenv(message: Message, client: Client) -> dict:
     """
     Returns a dictionary of local environment variables.
-    
+
     Args:
         message (Message): The message instance.
         client (Client): The client instance.
-    
+
     Returns:
         dict: A dictionary of local environment variables.
     """
@@ -46,7 +46,7 @@ class BufferedStream:
     def __init__(self, stream: asyncio.StreamReader, buffer_size: int):
         """
         Initializes a buffered stream.
-        
+
         Args:
             stream (asyncio.StreamReader): The stream reader instance.
             buffer_size (int): The buffer size.
@@ -58,7 +58,7 @@ class BufferedStream:
     async def read(self) -> bytes:
         """
         Reads data from the stream.
-        
+
         Returns:
             bytes: The read data.
         """
@@ -84,7 +84,7 @@ class Stream:
     ):
         """
         Initializes a stream.
-        
+
         Args:
             stream (asyncio.StreamReader): The stream reader instance.
             message (Message): The message instance.
@@ -131,7 +131,7 @@ class AsyncTerminal:
     ):
         """
         Initializes an async terminal.
-        
+
         Args:
             message (Message): The message instance.
             command (str): The command to be executed.
@@ -149,7 +149,7 @@ class AsyncTerminal:
     async def run(self) -> int:
         """
         Runs the async terminal.
-        
+
         Returns:
             int: The exit code.
         """
@@ -171,13 +171,14 @@ class AsyncTerminal:
         await asyncio.gather(stdout_processor.process(), stderr_processor.process())
 
         code = await process.wait()
-        del self.command_processes[str(self.message.chat.id)][str(self.message.id)]
+        del self.command_processes[str(
+            self.message.chat.id)][str(self.message.id)]
         return code
 
     def get_processes(self) -> dict:
         """
         Returns the command processes.
-        
+
         Returns:
             dict: A dictionary of command processes.
         """

@@ -38,5 +38,6 @@ def import_library(library_name: str, package_name: str = None):
         return importlib.import_module(library_name)
     except ImportError:
         package_name = package_name or library_name
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", package_name])
         return importlib.import_module(library_name)

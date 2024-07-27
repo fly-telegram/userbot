@@ -6,6 +6,7 @@ from typing import Union
 
 from pyrogram import Client, types
 
+
 class Conversation:
     """
     A context manager for a conversation with a Telegram chat.

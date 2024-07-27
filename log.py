@@ -14,6 +14,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from inline.types import inline
 
+
 def fix_task_error(task: asyncio.Task):
     """
     Fixes task errors by canceling the task and ignoring any exceptions.
@@ -28,6 +29,7 @@ def fix_task_error(task: asyncio.Task):
             pass
 
     task.add_done_callback(functools.partial(no_error))
+
 
 class UserbotHandler(logging.StreamHandler):
     """
@@ -88,6 +90,7 @@ class UserbotHandler(logging.StreamHandler):
 
             await inline.bot.send_message(me.id, text,
                                           reply_markup=builder.as_markup())
+
 
 def load(client: Client) -> logging.Logger:
     """

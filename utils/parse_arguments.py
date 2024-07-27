@@ -3,6 +3,7 @@
 
 import argparse
 
+
 def parse() -> argparse.Namespace:
     """
     Parses command-line arguments using argparse.

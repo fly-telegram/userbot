@@ -35,8 +35,10 @@ class Filters:
             bool: True if the message sender is an owner or the bot itself, False otherwise.
         """
         return bool(
-            message.from_user.id in account.get("owners") or message.from_user.is_self
+            message.from_user.id in account.get(
+                "owners") or message.from_user.is_self
         )
+
 
 owner = filters.create(Filters.owner_filter)
 

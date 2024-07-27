@@ -4,6 +4,7 @@
 from pyrogram import errors, Client
 from aiogram import Bot, Dispatcher
 from aiogram.exceptions import TelegramUnauthorizedError
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from . import events
@@ -36,7 +37,8 @@ class Inline:
         Returns:
             str: The bot token.
         """
-        id = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
+        id = "".join(random.choice(string.ascii_letters + string.digits)
+                     for _ in range(5))
         me = await client.get_me()
         username = f"flyTG_{id}_bot"
         display_name = f"🕊 Fly-telegram of {me.first_name}"
@@ -86,7 +88,8 @@ class Inline:
             db.save()
 
         try:
-            self.bot = Bot(token=token, default=Bot.Default.parse_mode(ParseMode.HTML))
+            self.bot = Bot(token=token, default=default=DefaultBotProperties(
+                parse_mode=ParseMode.HTML))
         except TelegramUnauthorizedError:
             db.set("inline_token", "")
             db.save()
@@ -98,4 +101,5 @@ class Inline:
         me = await client.get_me()
         await self.bot.send_message(me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
 
-        asyncio.ensure_future(self.dispatcher.start_polling(self.bot, skip_updates=True, handle_signals=False))
+        asyncio.ensure_future(self.dispatcher.start_polling(
+            self.bot, skip_updates=True, handle_signals=False))
