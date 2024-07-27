@@ -3,7 +3,7 @@
 
 from typing import List, Optional
 
-from database.types import account
+from database.types import account, db
 from utils.git import version
 
 import datetime
@@ -35,10 +35,18 @@ class Builder:
             hidden (bool): is the module hidden? (optional)
         """
 
+        db.set(
+            name,
+            {
+                "__config__": {},
+                "__hidden__": hidden
+            }
+        )
+        db.save()
+
         modules[name] = {
             "commands": commands,
-            "is.dragon": is_dragon,
-            "hidden": hidden
+            "is.dragon": is_dragon
         }
 
     def get_modules(self) -> List[str]:
