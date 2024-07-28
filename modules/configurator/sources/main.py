@@ -5,7 +5,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from utils import loader, config
-from .utils import prefixes, db
+from .utils import prefixes, db, EMOJI
 
 
 @Client.on_message(filters.command(["config", "cfg"], prefixes) & loader.owner)
