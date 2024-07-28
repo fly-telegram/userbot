@@ -29,7 +29,7 @@ async def config_cmd(Client, message: Message):
             )
             for i, (module, config_keys) in enumerate(modules.items())
         )
-        await message.edit("🕊️ <b>Modules and values editable:</b>\n", f"{all_modules}")
+        await message.edit("🕊️ <b>Modules and values editable:</b>\n" f"{all_modules}")
     elif len(message.command) == 2:
         module_name = message.command[1]
         if module_name in modules:
@@ -38,7 +38,7 @@ async def config_cmd(Client, message: Message):
                 f"└─ <b>{key}</b>"
                 for i, key in enumerate(modules[module_name])
             )
-            await message.edit(f"🕊️ <b>{module_name}</b>\n", f"{config_keys}")
+            await message.edit(f"🕊️ <b>{module_name}</b>\n" f"{config_keys}")
         else:
             await message.edit("❌ <b>Module not found.</b>")
     elif len(message.command) == 4:
