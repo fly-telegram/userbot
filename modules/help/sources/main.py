@@ -54,7 +54,7 @@ async def unhide_cmd(Client, message: Message):
         return
         
     config = db.get(module)
-    config["__hidden__"] = True
+    config["__hidden__"] = False
     db.set(module, config)
     db.save()
     
