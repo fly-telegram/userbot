@@ -71,4 +71,4 @@ async def hidehelp_cmd(Client, message: Message):
         f"└─ {EMOJI if not data['is.dragon'] else DRAGON_EMOJI} <b>{module}</b>: [ <code>{', '.join(data['commands'])}</code> ]"
         for i, (module, data) in enumerate(items)
     )
-    await message.edit("🕊 <b>All commands</b>\n" f"{all_commands}")
+    await message.edit("🕊 <b>All hidden commands</b>\n" f"{all_commands}")

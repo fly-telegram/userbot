@@ -2,9 +2,22 @@
   "inline_token": null,
   "restart_info": null,
   "core": {
-    "restart": {},
     "update": {
       "GIT_ORIGIN": "https://github.com/fly-telegram/userbot.git"
-    }
+    },
+    "__config__": {},
+    "__hidden__": false
+  },
+  "executor": {
+    "__config__": {},
+    "__hidden__": false
+  },
+  "loader": {
+    "__config__": {},
+    "__hidden__": false
+  },
+  "help": {
+    "__config__": {},
+    "__hidden__": false
   }
 }

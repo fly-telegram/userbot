@@ -14,6 +14,7 @@ from .utils import (
     DONE_EMOJI,
     SECRET_TEXT,
     AsyncTerminal,
+    config
 )
 
 command_processes = {}  # {"chatID": {"messageID": "PROC"}}
@@ -58,7 +59,8 @@ async def terminal_cmd(Client, message: Message):
     text = "📼 <b>Command</b>: \n" f"<code>{command}</code>\n" "📀 <b>Result</b>: \n"
 
     try:
-        process = AsyncTerminal(message, command, text, 0.25)
+        process = AsyncTerminal(message, command, text,
+                                config["terminal.speed"])
         command_processes = process.get_processes()
         await process.run()
     except KeyError:

@@ -66,7 +66,7 @@ async def addprefix_cmd(Client, message: Message):
 
     await message.edit(
         f"🕊 <b>added new prefix: {prefix}</b>\n"
-        f"<code>prefixes: {' | '.join(prefixes)}</code>"
+        f"<code>prefixes: {' '.join(prefixes)}</code>"
     )
 
 

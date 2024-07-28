@@ -7,7 +7,7 @@ import requests
 import git
 import os
 
-version = (1, 0, 3)
+version = (1, 0, 4)
 
 try:
     repo = git.Repo(os.path.dirname(os.path.abspath(__name__)))

@@ -10,6 +10,16 @@ from pyrogram.errors import exceptions
 
 import asyncio
 
+from utils.config import Config, ConfigValue
+
+config = Config(
+    "executor",
+    ConfigValue(
+        "terminal.speed",
+        0.25
+    )
+)
+
 prefixes = account.get("prefixes")
 
 ERROR_EMOJI = "❌"
