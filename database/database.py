@@ -35,6 +35,8 @@ class Database(dict):
         """
         Saves the database to the JSON file.
         """
+        self.update(**self.load(self.location))
+        
         with self.location.open("w") as file:
             ujson.dump(self, file, indent=2)
 
@@ -48,6 +50,8 @@ class Database(dict):
         Returns:
             Any: The value.
         """
+        self.update(**self.load(self.location))
+        
         data = self
         for key in keys:
             if key in data:
@@ -64,5 +68,7 @@ class Database(dict):
             key (str): The key to set the value.
             value (Any): The value to set.
         """
+        self.update(**self.load(self.location))
+        
         self[key] = value
         self.save()
