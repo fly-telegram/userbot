@@ -47,9 +47,10 @@ class Config:
         """
         Saves the configuration values to the database.
         """
+        config_data = self.module_data.get("__config__")
         for value in self.values:
-            self.module_data["__config__"][value.key] = value.value
-
+            config_data[value.key] = value.value
+        self.module_data["__config__"] = config_data
         db.set(self.module, self.module_data)
 
     def __repr__(self):
