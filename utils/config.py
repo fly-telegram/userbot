@@ -47,7 +47,7 @@ class Config:
         """
         Saves the configuration values to the database.
         """
-        config_data = self.module_data.get("__config__")
+        config_data = self.module_data["__config__"]
         for value in self.values:
             config_data[value.key] = value.value
         self.module_data["__config__"] = config_data
