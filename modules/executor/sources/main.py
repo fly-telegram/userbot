@@ -60,7 +60,7 @@ async def terminal_cmd(Client, message: Message):
 
     try:
         process = AsyncTerminal(message, command, text,
-                                config["terminal.speed"])
+                                config_module["terminal.speed"])
         command_processes = process.get_processes()
         await process.run()
     except KeyError:
