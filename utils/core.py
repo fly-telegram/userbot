@@ -84,7 +84,6 @@ async def main(client: Client):
             db.get("restart_info", "text"),
         )
         db.set("restart_info", None)
-        db.save()
 
     await idle()
     await client.stop()
