@@ -10,10 +10,11 @@ from .utils import prefixes, db, EMOJI
 
 @Client.on_message(filters.command(["config", "cfg"], prefixes) & loader.owner)
 async def config_cmd(Client, message: Message):
-    modules = {
+    {
         key: value["__config__"]
         for key, value in db.items()
         if isinstance(value, dict) and "__config__" in value
+        and bool(value["__config__"])
     }
     if len(message.command) <= 1:
         all_modules = "\n".join(
