@@ -24,7 +24,6 @@ async def restart_cmd(Client, message: Message):
             "text": "🕊 <b>Restarted!</b>",
         },
     )
-    db.save()
 
     await message.edit("🕊 <b>Restarting...</b>")
     os.execl(sys.executable, sys.executable, "main.py")
@@ -64,7 +63,6 @@ async def addprefix_cmd(Client, message: Message):
     prefix = message.command[1].lower()
     prefixes.append(prefix)
     account.set("prefixes", prefixes)
-    account.save()
 
     await message.edit(
         f"🕊 <b>added new prefix: {prefix}</b>\n"

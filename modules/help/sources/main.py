@@ -38,7 +38,6 @@ async def hide_cmd(Client, message: Message):
     config = db.get(module)
     config["__hidden__"] = True
     db.set(module, config)
-    db.save()
     
     await message.edit(f"🕊️ <b>Module '{module}' is hidden!</b>")
     
@@ -56,7 +55,6 @@ async def unhide_cmd(Client, message: Message):
     config = db.get(module)
     config["__hidden__"] = False
     db.set(module, config)
-    db.save()
     
     await message.edit(f"🕊️ <b>Module '{module}' is not hidden!</b>")
     

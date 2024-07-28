@@ -85,14 +85,12 @@ class Inline:
         if not token:
             token = await self.create(client)
             db.set("inline_token", token)
-            db.save()
 
         try:
             self.bot = Bot(token=token, default=DefaultBotProperties(
                 parse_mode=ParseMode.HTML))
         except TelegramUnauthorizedError:
             db.set("inline_token", "")
-            db.save()
             return
 
         self.dispatcher = Dispatcher()

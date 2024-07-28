@@ -35,10 +35,10 @@ class Database(dict):
         """
         Saves the database to the JSON file.
         """
-        self.update(**self.load(self.location))
-        
         with self.location.open("w") as file:
             ujson.dump(self, file, indent=2)
+        
+        self.update(**self.load(self.location))
 
     def get(self, *keys):
         """
