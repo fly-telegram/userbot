@@ -5,6 +5,7 @@ import ujson
 from pathlib import Path
 from typing import Any, Dict
 
+
 class Database(dict):
     def __init__(self, location: str = "db.json"):
         """
@@ -37,7 +38,7 @@ class Database(dict):
         """
         with self.location.open("w") as file:
             ujson.dump(self, file, indent=2)
-        
+
         self.update(**self.load(self.location))
 
     def get(self, *keys):
@@ -51,7 +52,7 @@ class Database(dict):
             Any: The value.
         """
         self.update(**self.load(self.location))
-        
+
         data = self
         for key in keys:
             if key in data:
@@ -69,6 +70,6 @@ class Database(dict):
             value (Any): The value to set.
         """
         self.update(**self.load(self.location))
-        
+
         self[key] = value
         self.save()

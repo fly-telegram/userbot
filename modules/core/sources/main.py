@@ -11,7 +11,7 @@ import os
 from utils import loader
 from utils.git import repo, origin, version, check_update
 from utils.misc import uptime, ram
-from .utils import prefixes, db, text, account 
+from .utils import prefixes, db, text, account
 
 
 @Client.on_message(filters.command("restart", prefixes=prefixes) & loader.owner)

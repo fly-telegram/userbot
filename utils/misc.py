@@ -35,14 +35,14 @@ class Builder:
             hidden (bool): is the module hidden? (optional)
         """
 
-        db.set(
-            name,
-            {
-                "__config__": {},
-                "__hidden__": hidden
-            }
-        )
-        db.save()
+        if not name in db.keys():
+            db.set(
+                name,
+                {
+                    "__config__": {},
+                    "__hidden__": hidden
+                }
+            )
 
         modules[name] = {
             "commands": commands,
