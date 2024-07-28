@@ -12,7 +12,7 @@ import asyncio
 
 from utils.config import Config, ConfigValue
 
-config = Config(
+config_module = Config(
     "executor",
     ConfigValue(
         "terminal.speed",

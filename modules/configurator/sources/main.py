@@ -51,7 +51,7 @@ async def config_cmd(Client, message: Message):
             if key in modules[module_name]:
                 module["__config__"][key] = value
                 db.set(module_name, module)
-                await message.edit(f"🕊️ <b>{module_name}</b>"
+                await message.edit(f"🕊️ <b>{module_name}</b>\n"
                                    f"<code>Value is set to {value}!</code>")
             else:
                 await message.edit("❌ <b>Key is not found.</b>")

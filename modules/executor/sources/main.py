@@ -14,7 +14,7 @@ from .utils import (
     DONE_EMOJI,
     SECRET_TEXT,
     AsyncTerminal,
-    config
+    config_module
 )
 
 command_processes = {}  # {"chatID": {"messageID": "PROC"}}
