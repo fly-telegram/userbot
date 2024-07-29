@@ -18,7 +18,7 @@ config_module = Config(
     ConfigValue(
         "terminal.speed",
         0.25,
-        Validators.Float()
+        Validators.Float
     ),
     
 )
