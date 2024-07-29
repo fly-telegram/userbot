@@ -14,12 +14,14 @@ class ConfigValue:
     def __init__(
         self,
         key: str,
-        value: Union[str, int, bool, float]
+        value: Union[str, int, bool, float],
+        validator
     ):
         self.key = key
         self.value = value
+        self.validator = validator
 
-class Config(dict):
+class Config:
     def __init__(
         self,
         module: str,
@@ -72,5 +74,9 @@ class Config(dict):
             key (str): The key of the configuration value.
             value (Union[str, int, bool, float]): The new value.
         """
-        self.module_data["__config__"][key] = value
-        db.set(self.module, self.module_data)
+        for config_value in self.values:
+            if config_value.key == key:
+                if not config_value.validator(value):
+                    raise ValueError(f"Invalid value for key '{key}'.")
+                self.module_data["__config__"][key] = value
+                db.set(self.module, self.module_data)

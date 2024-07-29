@@ -16,6 +16,7 @@ async def config_cmd(Client, message: Message):
         if isinstance(value, dict) and "__config__" in value
         and bool(value["__config__"])
     }
+    
     if len(message.command) <= 1:
         all_modules = "\n".join(
             f"├─ {EMOJI} <b>{module}</b>\n" + "\n".join(
@@ -47,16 +48,7 @@ async def config_cmd(Client, message: Message):
         key = message.command[2]
         value = message.command[3]
         module = db.get(module_name)
-        if module_name in modules:
-            if key in modules[module_name]:
-                for config_value in self.values:
-                    if config_value.key == key:
-                        if not config_value.validator(value):
-                            await message.edit("❌ <b>Invalid value.</b>")
-                            return
-                        module["__config__"][key] = value
-                        db.set(module_name, module)
-                        await message.edit(f"🕊️ <b>{module_name}</b>\n"
-                                           f"<code>Value is set to {value}!</code>")
-                        return
-                await message.edit("❌ <b>Key is not found.</b>")
+        module["__config__"][key] = value
+        db.set(module_name, module)
+        await message.edit(f"🕊️ <b>{module_name}</b>\n"
+                           f"<code>Value is set to {value}!</code>")

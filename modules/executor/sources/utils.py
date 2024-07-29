@@ -11,13 +11,16 @@ from pyrogram.errors import exceptions
 import asyncio
 
 from utils.config import Config, ConfigValue
+from utils.validators import Validators
 
 config_module = Config(
     "executor",
     ConfigValue(
         "terminal.speed",
         0.25
-    )
+        Validators.float()
+    ),
+    
 )
 
 prefixes = account.get("prefixes")
