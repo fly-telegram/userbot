@@ -78,5 +78,5 @@ class Config:
             if config_value.key == key:
                 if not config_value.validator(value):
                     raise ValueError(f"Invalid value for key '{key}'.")
-                self.module_data["__config__"][key] = value
+                self.module_data["__config__"][key] = config_value.validator(value)
                 db.set(self.module, self.module_data)

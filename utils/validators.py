@@ -8,16 +8,14 @@ class Validators:
     @staticmethod
     def Float(value):
         try:
-            float(value)
-            return True
+            return float(value)
         except ValueError:
             return False
 
     @staticmethod
     def Integer(value):
         try:
-            int(value)
-            return True
+            return int(value)
         except ValueError:
             return False
 
