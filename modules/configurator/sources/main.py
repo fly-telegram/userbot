@@ -49,13 +49,14 @@ async def config_cmd(Client, message: Message):
         module = db.get(module_name)
         if module_name in modules:
             if key in modules[module_name]:
-                module["__config__"][key] = value
-                db.set(module_name, module)
-                await message.edit(f"🕊️ <b>{module_name}</b>\n"
-                                   f"<code>Value is set to {value}!</code>")
-            else:
+                for config_value in self.values:
+                    if config_value.key == key:
+                        if not config_value.validator(value):
+                            await message.edit("❌ <b>Invalid value.</b>")
+                            return
+                        module["__config__"][key] = value
+                        db.set(module_name, module)
+                        await message.edit(f"🕊️ <b>{module_name}</b>\n"
+                                           f"<code>Value is set to {value}!</code>")
+                        return
                 await message.edit("❌ <b>Key is not found.</b>")
-        else:
-            await message.edit("❌ <b>Module not found.</b>")
-    else:
-        await message.edit("❌ <b>Invalid number of arguments.</b>")
