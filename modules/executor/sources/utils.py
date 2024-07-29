@@ -17,7 +17,7 @@ config_module = Config(
     "executor",
     ConfigValue(
         "terminal.speed",
-        0.25
+        0.25,
         Validators.float()
     ),
     
