@@ -4,16 +4,13 @@
 from database.types import db
 from typing import Union
 
-
 class ConfigValue:
     """
     Represents a single configuration value.
-
     Attributes:
         key (str): The key of the configuration value.
         value (Union[str, int, bool, float]): The value of the configuration value.
     """
-
     def __init__(
         self,
         key: str,
@@ -22,8 +19,7 @@ class ConfigValue:
         self.key = key
         self.value = value
 
-
-class Config:
+class Config(dict):
     def __init__(
         self,
         module: str,
@@ -31,7 +27,6 @@ class Config:
     ):
         """
         Initializes a new Config object.
-
         Args:
             module (str): The name of the module.
             *values (ConfigValue): A variable number of configuration values.
@@ -40,24 +35,42 @@ class Config:
         self.module = module
         self.values = values
         self.module_data = db.get(module)
-
+        
         self.save()
-
+    
     def save(self):
         """
         Saves the configuration values to the database.
         """
-        config_data = self.module_data["__config__"]
         for value in self.values:
-            config_data[value.key] = value.value
-        self.module_data["__config__"] = config_data
+            self.module_data["__config__"][value.key] = value.value
+        
         db.set(self.module, self.module_data)
-
+    
     def __repr__(self):
         """
         Returns a string representation of the Config object.
-
         Returns:
             str: A string representation of the Config object.
         """
         return str(self.module_data.get("__config__"))
+    
+    def __getitem__(self, key):
+        """
+        Returns the value associated with the given key.
+        Args:
+            key (str): The key of the configuration value.
+        Returns:
+            Union[str, int, bool, float]: The value associated with the given key.
+        """
+        return self.module_data["__config__"].get(key)
+    
+    def __setitem__(self, key, value):
+        """
+        Sets the value associated with the given key.
+        Args:
+            key (str): The key of the configuration value.
+            value (Union[str, int, bool, float]): The new value.
+        """
+        self.module_data["__config__"][key] = value
+        db.set(self.module, self.module_data)
