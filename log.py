@@ -6,11 +6,13 @@ import threading
 import logging
 import asyncio
 import functools
+import html
 
 from pyrogram import Client
 from pyrogram.errors import exceptions
 from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram import exceptions
 
 from inline.types import inline
 
@@ -83,10 +85,10 @@ class UserbotHandler(logging.StreamHandler):
             except exceptions.flood_420.FloodWait:
                 return self.buffer.append(self.format(record))
 
-            text = f"<code>{self.format(record)}</code>\n"
+            text = f"<code>{html.escape(self.format(record))}</code>\n"
             if self.buffer:
                 for x in self.buffer:
-                    text += f"<code>{x}</code>\n"
+                    text += f"<code>{html.escape(x)}</code>\n"
 
             await inline.bot.send_message(me.id, text,
                                           reply_markup=builder.as_markup())
