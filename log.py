@@ -12,7 +12,6 @@ from pyrogram import Client
 from pyrogram.errors import exceptions
 from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram import exceptions
 
 from inline.types import inline
 
