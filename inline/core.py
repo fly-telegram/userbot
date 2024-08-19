@@ -65,7 +65,8 @@ class Inline:
                     if match:
                         token = match.group(1)
                     if any(error in response.text for error in self.errors_text):
-                        return False
+                        raise Exception(
+                            f"Failedto create inline bot. Botfather response: {response.text}")
                 except errors.UserIsBlocked:
                     await client.unblock_user(botfather)
 
@@ -81,16 +82,17 @@ class Inline:
         Args:
             client (pyrogram.Client): The Telegram client instance.
         """
-        token = db.get("inline_token")
-        if not token:
+        inline_token = db.get("inline_token")
+        if not inline_token:
             token = await self.create(client)
             db.set("inline_token", token)
-
+            if not token:
+                raise Exception("Failed to create inline bot!")
         try:
             self.bot = Bot(token=token, default=DefaultBotProperties(
                 parse_mode=ParseMode.HTML))
         except TelegramUnauthorizedError:
-            db.set("inline_token", "")
+            db.set("inline_token", None)
             return
 
         self.dispatcher = Dispatcher()

@@ -82,13 +82,13 @@ async def load_cmd(Client, message: Message):
                 return
 
             requirements = info.get("requires", "requirements")
-            format_requirements = "\n".join(
-                f"├─ {requirement}" if i < len(
-                    requirements) - 1 else f"└─ {requirement}"
-                for i, requirement in enumerate(requirements)
-            )
 
             if requirements:
+                format_requirements = "\n".join(
+                    f"├─ {requirement}" if i < len(
+                        requirements) - 1 else f"└─ {requirement}"
+                    for i, requirement in enumerate(requirements)
+                )
                 await message.edit(
                     f"🕊 <b>{module_name}</b>\n"
                     f"<code>Installing requirements: \n{format_requirements}</code>"

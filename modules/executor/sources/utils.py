@@ -20,7 +20,7 @@ config_module = Config(
         0.25,
         Validators.Float
     ),
-    
+
 )
 
 prefixes = account.get("prefixes")

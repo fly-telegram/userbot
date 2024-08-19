@@ -16,7 +16,7 @@ async def config_cmd(Client, message: Message):
         if isinstance(value, dict) and "__config__" in value
         and bool(value["__config__"])
     }
-    
+
     if len(message.command) <= 1:
         all_modules = "\n".join(
             f"├─ {EMOJI} <b>{module}</b>\n" + "\n".join(

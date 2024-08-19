@@ -4,6 +4,7 @@
 from database.types import db
 from typing import Union
 
+
 class ConfigValue:
     """
     Represents a single configuration value.
@@ -11,6 +12,7 @@ class ConfigValue:
         key (str): The key of the configuration value.
         value (Union[str, int, bool, float]): The value of the configuration value.
     """
+
     def __init__(
         self,
         key: str,
@@ -20,6 +22,7 @@ class ConfigValue:
         self.key = key
         self.value = value
         self.validator = validator
+
 
 class Config:
     def __init__(
@@ -37,18 +40,18 @@ class Config:
         self.module = module
         self.values = values
         self.module_data = db.get(module)
-        
+
         self.save()
-    
+
     def save(self):
         """
         Saves the configuration values to the database.
         """
         for value in self.values:
             self.module_data["__config__"][value.key] = value.value
-        
+
         db.set(self.module, self.module_data)
-    
+
     def __repr__(self):
         """
         Returns a string representation of the Config object.
@@ -56,7 +59,7 @@ class Config:
             str: A string representation of the Config object.
         """
         return str(self.module_data.get("__config__"))
-    
+
     def __getitem__(self, key):
         """
         Returns the value associated with the given key.
@@ -66,7 +69,7 @@ class Config:
             Union[str, int, bool, float]: The value associated with the given key.
         """
         return self.module_data["__config__"].get(key)
-    
+
     def __setitem__(self, key, value):
         """
         Sets the value associated with the given key.
@@ -78,5 +81,6 @@ class Config:
             if config_value.key == key:
                 if not config_value.validator(value):
                     raise ValueError(f"Invalid value for key '{key}'.")
-                self.module_data["__config__"][key] = config_value.validator(value)
+                self.module_data["__config__"][key] = config_value.validator(
+                    value)
                 db.set(self.module, self.module_data)
