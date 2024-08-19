@@ -15,6 +15,7 @@ from database.database import Database
 from utils.git import version
 from utils.loader import owner
 from utils.misc import modules
+from utils.scripts import format_exc
 from .utils import prefixes, loader
 
 
@@ -111,7 +112,7 @@ async def load_cmd(Client, message: Message):
             await loader.load_dragon(module_name, Client, check_code)
     except Exception as error:
         await message.edit(
-            f"❌ <b>{module_name} installing error</b>\n<code>{error}</code>"
+            f"❌ <b>{module_name} installing error</b>\n<code>{format_exc(error)}</code>"
         )
         if not dragon:
             shutil.rmtree(os.path.join("modules", module_name))
