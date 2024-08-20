@@ -8,6 +8,7 @@ from utils.loader import Loader
 from utils.parse_arguments import parse
 from database.types import db
 from utils.git import check_update
+from utils.types import me
 
 import log
 import os
@@ -25,8 +26,6 @@ logo = """
 parser = parse()
 loader = Loader()
 
-me = None
-
 async def main(client: Client):
     """
     Main loop
@@ -42,7 +41,7 @@ async def main(client: Client):
     await inline.load(client)
 
     logger = log.load()
-    
+
     me = client.get_me()
 
     update = "Update available!" if check_update() else "Up-To-Date"

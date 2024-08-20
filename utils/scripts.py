@@ -6,7 +6,6 @@ import importlib
 import subprocess
 import sys
 
-
 def format_exc(e: Exception) -> str:
     """
     Formats an exception into a string.

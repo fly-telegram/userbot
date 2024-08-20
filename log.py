@@ -14,7 +14,7 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from inline.types import inline
-from utils.core import me
+from utils.types import me
 
 def fix_task_error(task: asyncio.Task):
     """
