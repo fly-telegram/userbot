@@ -25,6 +25,7 @@ logo = """
 parser = parse()
 loader = Loader()
 
+me = None
 
 async def main(client: Client):
     """
@@ -40,7 +41,9 @@ async def main(client: Client):
     await client.start()
     await inline.load(client)
 
-    logger = log.load(client)
+    logger = log.load()
+    
+    me = client.get_me()
 
     update = "Update available!" if check_update() else "Up-To-Date"
     logger.info(f"Userbot is started! ({update})")

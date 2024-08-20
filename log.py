@@ -14,7 +14,7 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from inline.types import inline
-
+from utils.core import me
 
 def fix_task_error(task: asyncio.Task):
     """
@@ -40,7 +40,7 @@ class UserbotHandler(logging.StreamHandler):
         client (Client): The Telegram client instance.
     """
 
-    def __init__(self, client: Client):
+    def __init__(self):
         """
         Initializes the handler.
 
@@ -51,8 +51,6 @@ class UserbotHandler(logging.StreamHandler):
 
         self.filters = []
         self.lock = threading.RLock()
-
-        self.client = client
         super().__init__()
 
     def emit(self, record: logging.LogRecord):
@@ -79,11 +77,6 @@ class UserbotHandler(logging.StreamHandler):
             builder.row(types.InlineKeyboardButton(
                 text="⚠️ Issues", url="https://github.com/fly-telegram/userbot/issues"))
 
-            try:
-                me = await self.client.get_me()
-            except exceptions.flood_420.FloodWait:
-                return self.buffer.append(self.format(record))
-
             text = f"<code>{html.escape(self.format(record))}</code>\n"
             if self.buffer:
                 for x in self.buffer:
@@ -93,12 +86,9 @@ class UserbotHandler(logging.StreamHandler):
                                           reply_markup=builder.as_markup())
 
 
-def load(client: Client) -> logging.Logger:
+def load() -> logging.Logger:
     """
     Loads the logging configuration for the userbot.
-
-    Args:
-        client (Client): The Telegram client instance.
 
     Returns:
         logging.Logger: The logger instance.
