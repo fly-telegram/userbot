@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 
 from . import events
 from utils.conv import Conversation
-from utils.types import me
+from utils import types
 from database.types import db
 
 import random
@@ -41,7 +41,7 @@ class Inline:
         id = "".join(random.choice(string.ascii_letters + string.digits)
                      for _ in range(5))
         username = f"flyTG_{id}_bot"
-        display_name = f"🕊 Fly-telegram of {me.first_name}"
+        display_name = f"🕊 Fly-telegram of {types.me.first_name}"
 
         messages = [
             "/cancel",
@@ -98,7 +98,7 @@ class Inline:
         self.dispatcher = Dispatcher()
         self.dispatcher.include_router(events.router)
 
-        await self.bot.send_message(me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
+        await self.bot.send_message(types.me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
 
         asyncio.ensure_future(self.dispatcher.start_polling(
             self.bot, skip_updates=True, handle_signals=False))
