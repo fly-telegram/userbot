@@ -14,7 +14,6 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from inline.types import inline
-from utils.types import me
 
 def fix_task_error(task: asyncio.Task):
     """
@@ -40,7 +39,7 @@ class UserbotHandler(logging.StreamHandler):
         client (Client): The Telegram client instance.
     """
 
-    def __init__(self):
+    def __init__(self, client: Client):
         """
         Initializes the handler.
 
@@ -82,7 +81,7 @@ class UserbotHandler(logging.StreamHandler):
                 for x in self.buffer:
                     text += f"<code>{html.escape(x)}</code>\n"
 
-            await inline.bot.send_message(me.id, text,
+            await inline.bot.send_message(client.me.id, text,
                                           reply_markup=builder.as_markup())
 
 

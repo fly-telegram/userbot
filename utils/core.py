@@ -8,7 +8,6 @@ from utils.loader import Loader
 from utils.parse_arguments import parse
 from database.types import db
 from utils.git import check_update
-from utils import types
 
 import log
 import os
@@ -40,9 +39,11 @@ async def main(client: Client):
     await client.start()
     await inline.load(client)
 
-    logger = log.load()
+    logger = log.load(client)
 
-    types.me = client.get_me()
+    if not client.me:
+        me = await client.get_me()
+        client.me = me
 
     update = "Update available!" if check_update() else "Up-To-Date"
     logger.info(f"Userbot is started! ({update})")
