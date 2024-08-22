@@ -97,7 +97,7 @@ class Inline:
         self.dispatcher = Dispatcher()
         self.dispatcher.include_router(events.router)
 
-        await self.bot.send_message(types.me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
+        await self.bot.send_message(client.me.id, "🕊 <b>Fly-telegram userbot is loaded!</b>")
 
         asyncio.ensure_future(self.dispatcher.start_polling(
             self.bot, skip_updates=True, handle_signals=False))
