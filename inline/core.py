@@ -9,7 +9,6 @@ from aiogram.enums import ParseMode
 
 from . import events
 from utils.conv import Conversation
-from utils import types
 from database.types import db
 
 import random
