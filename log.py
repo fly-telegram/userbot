@@ -47,6 +47,7 @@ class UserbotHandler(logging.StreamHandler):
             client (Client): The Telegram client instance.
         """
         self.buffer = []
+        self.client = client
 
         self.filters = []
         self.lock = threading.RLock()
@@ -81,11 +82,11 @@ class UserbotHandler(logging.StreamHandler):
                 for x in self.buffer:
                     text += f"<code>{html.escape(x)}</code>\n"
 
-            await inline.bot.send_message(client.me.id, text,
+            await inline.bot.send_message(self.client.me.id, text,
                                           reply_markup=builder.as_markup())
 
 
-def load() -> logging.Logger:
+def load(client: Client) -> logging.Logger:
     """
     Loads the logging configuration for the userbot.
 
