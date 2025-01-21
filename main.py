@@ -28,6 +28,7 @@ client = Client(
     device_model="Fly Telegram",
     parse_mode=ParseMode.HTML,
     session_string=parser.session_string if parser.session_string else None,
+    test_mode=parser.test if parser.test else False
 )
 
 try:
