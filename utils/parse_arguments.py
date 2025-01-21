@@ -32,4 +32,10 @@ def parse() -> argparse.Namespace:
         help="Disables the logo in the console.",
     )
 
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="In telegram test server",
+    )
+    
     return parser.parse_args()
