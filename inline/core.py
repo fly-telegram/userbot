@@ -85,7 +85,7 @@ class Inline:
         if not inline_token:
             inline_token = await self.create(client)
             db.set("inline_token", inline_token)
-            if not token:
+            if not inline_token:
                 raise Exception("Failed to create inline bot!")
         try:
             self.bot = Bot(token=inline_token, default=DefaultBotProperties(
